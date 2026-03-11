@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Shield, Lock, Server, ArrowRight } from 'lucide-react';
+import { Shield, Lock, Server, ArrowRight, EyeOff, Cpu, GlobeLock } from 'lucide-react';
 import { MOCK_PRODUCTS } from '../store/mockData';
 import ProductCard from '../components/ProductCard';
 import { motion } from 'motion/react';
@@ -27,7 +27,7 @@ export default function Home() {
             className="mb-8 flex justify-center"
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 font-mono text-sm font-medium text-emerald-400 backdrop-blur-sm">
-              <Shield className="h-4 w-4" /> SECURE YOUR DIGITAL LIFE
+              <Shield className="h-4 w-4" /> RECLAIM YOUR DIGITAL AUTONOMY
             </span>
           </motion.div>
           
@@ -37,7 +37,7 @@ export default function Home() {
             transition={{ delay: 0.3 }}
             className="mb-8 font-sans text-5xl font-extrabold tracking-tight sm:text-7xl"
           >
-            Enterprise-Grade <br />
+            Uncompromising <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
               Privacy & Security
             </span>
@@ -49,7 +49,7 @@ export default function Home() {
             transition={{ delay: 0.4 }}
             className="mx-auto mb-10 max-w-2xl text-lg text-zinc-400 sm:text-xl"
           >
-            VaultWares provides hardened hardware and zero-log software solutions for individuals and organizations who take data privacy seriously.
+            VaultWares provides enterprise-grade Intrusion Detection Systems, GrapheneOS devices, QubesOS laptops, and zero-telemetry network sentries to protect you from corporate surveillance and malicious actors.
           </motion.p>
           
           <motion.div
@@ -65,10 +65,10 @@ export default function Home() {
               BROWSE CATALOG <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
-              to="/about"
+              to="/blog"
               className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-8 py-4 font-mono text-sm font-bold text-white backdrop-blur-sm transition-all hover:bg-white/10 sm:w-auto"
             >
-              LEARN MORE
+              READ OUR INTEL
             </Link>
           </motion.div>
         </div>
@@ -80,24 +80,24 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
             <div className="flex flex-col items-center text-center">
               <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400">
-                <Lock className="h-8 w-8" />
+                <EyeOff className="h-8 w-8" />
               </div>
-              <h3 className="mb-4 font-mono text-xl font-bold text-white">End-to-End Encryption</h3>
-              <p className="text-zinc-400">Military-grade AES-256 encryption on all our hardware storage devices, ensuring your data remains yours.</p>
+              <h3 className="mb-4 font-mono text-xl font-bold text-white">Zero Telemetry</h3>
+              <p className="text-zinc-400">Our hardware and software are stripped of all tracking. No analytics, no data harvesting, no compromise. Your data stays on your device.</p>
             </div>
             <div className="flex flex-col items-center text-center">
               <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400">
-                <Server className="h-8 w-8" />
+                <Cpu className="h-8 w-8" />
               </div>
-              <h3 className="mb-4 font-mono text-xl font-bold text-white">Zero-Log Infrastructure</h3>
-              <p className="text-zinc-400">Our VPN and software services are built on a strict zero-log policy, independently audited for your peace of mind.</p>
+              <h3 className="mb-4 font-mono text-xl font-bold text-white">Open Source Hardware</h3>
+              <p className="text-zinc-400">Trust through transparency. Our laptops and routers are built on verifiable open-source hardware and firmware, ensuring no hidden backdoors.</p>
             </div>
             <div className="flex flex-col items-center text-center">
               <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400">
-                <Shield className="h-8 w-8" />
+                <GlobeLock className="h-8 w-8" />
               </div>
-              <h3 className="mb-4 font-mono text-xl font-bold text-white">Open Source Firmware</h3>
-              <p className="text-zinc-400">Trust through transparency. Our routers and secure laptops run on verifiable open-source firmware.</p>
+              <h3 className="mb-4 font-mono text-xl font-bold text-white">Network Sovereignty</h3>
+              <p className="text-zinc-400">Take back your network with our drop-in Intrusion Detection Systems and Privacy Hubs. Block ISP spying and malicious traffic at the gateway.</p>
             </div>
           </div>
         </div>
@@ -108,7 +108,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 flex items-end justify-between border-b border-white/10 pb-6">
             <div>
-              <h2 className="font-mono text-3xl font-bold text-white">FEATURED HARDWARE</h2>
+              <h2 className="font-mono text-3xl font-bold text-white">FLAGSHIP HARDWARE</h2>
               <p className="mt-2 text-zinc-400">Top-tier security devices for uncompromising protection.</p>
             </div>
             <Link to="/store" className="hidden font-mono text-sm font-bold text-emerald-400 hover:text-emerald-300 sm:block">

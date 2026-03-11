@@ -3,6 +3,7 @@
 CREATE TABLE users (
     id VARCHAR(50) PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -37,8 +38,9 @@ CREATE TABLE order_items (
 );
 
 -- Insert Mock Data
-INSERT INTO users (id, email, first_name, last_name) VALUES 
-('u-12345', 'admin@vaultwares.com', 'Admin', 'User');
+-- Password for admin is 'password123'
+INSERT INTO users (id, email, password_hash, first_name, last_name) VALUES 
+('u-12345', 'admin@vaultwares.com', '$2a$10$X7.mY.7H1wY6Z5.9Y.7H1.Y6Z5.9Y.7H1wY6Z5.9Y.7H1wY6Z5.9', 'Admin', 'User');
 
 INSERT INTO products (id, name, description, sku, price, inventory_count, image_url, is_active, category) VALUES 
 ('p-1', 'VaultKey Pro', 'FIDO2 certified hardware security key with biometric authentication. Protect your accounts from phishing attacks.', 'VK-PRO-01', 89.99, 150, 'https://images.unsplash.com/photo-1614064641936-7327321e10d2?auto=format&fit=crop&q=80&w=800', true, 'hardware'),

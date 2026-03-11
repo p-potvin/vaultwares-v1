@@ -1,17 +1,31 @@
 import { useState, useEffect } from 'react';
-import { MOCK_USER, Order } from '../store/mockData';
-import { User, Package, Settings, LogOut, ShieldAlert, Loader2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Order } from '../store/mockData';
+import { useAuth } from '../context/AuthContext';
+import TrackingWidget from '../components/TrackingWidget';
+import { User, Package, Settings, LogOut, ShieldAlert, Loader2, MapPin } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState<'orders' | 'profile'>('orders');
+  const [activeTab, setActiveTab] = useState<'orders' | 'profile' | 'tracking'>('orders');
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { user, token, logout, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+
     const fetchOrders = async () => {
       try {
-        const response = await fetch('/api/orders');
+        const response = await fetch('/api/orders', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         if (response.ok) {
           const data = await response.json();
           setOrders(data);
@@ -23,7 +37,14 @@ export default function Dashboard() {
       }
     };
     fetchOrders();
-  }, []);
+  }, [isAuthenticated, navigate, token]);
+
+  if (!user) return null;
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <motion.div
@@ -38,7 +59,7 @@ export default function Dashboard() {
             SECURE <span className="text-emerald-400">DASHBOARD</span>
           </h1>
           <p className="text-zinc-400">
-            Welcome back, {MOCK_USER.first_name}. Your connection is encrypted.
+            Welcome back, {user.first_name}. Your connection is encrypted.
           </p>
         </div>
 
@@ -59,6 +80,17 @@ export default function Dashboard() {
                   ORDER HISTORY
                 </button>
                 <button
+                  onClick={() => setActiveTab('tracking')}
+                  className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 font-mono text-sm font-bold transition-colors ${
+                    activeTab === 'tracking'
+                      ? 'bg-emerald-500/10 text-emerald-400'
+                      : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
+                  }`}
+                >
+                  <MapPin className="h-5 w-5" />
+                  TRACK SHIPMENT
+                </button>
+                <button
                   onClick={() => setActiveTab('profile')}
                   className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 font-mono text-sm font-bold transition-colors ${
                     activeTab === 'profile'
@@ -70,7 +102,10 @@ export default function Dashboard() {
                   PROFILE SETTINGS
                 </button>
                 <div className="my-4 border-t border-white/10"></div>
-                <button className="flex w-full items-center gap-3 rounded-lg px-4 py-3 font-mono text-sm font-bold text-red-400 transition-colors hover:bg-red-500/10">
+                <button 
+                  onClick={handleLogout}
+                  className="flex w-full items-center gap-3 rounded-lg px-4 py-3 font-mono text-sm font-bold text-red-400 transition-colors hover:bg-red-500/10"
+                >
                   <LogOut className="h-5 w-5" />
                   SECURE LOGOUT
                 </button>
@@ -80,6 +115,10 @@ export default function Dashboard() {
 
           {/* Main Content Area */}
           <div className="lg:col-span-3">
+            {activeTab === 'tracking' && (
+              <TrackingWidget />
+            )}
+
             {activeTab === 'orders' && (
               <div className="space-y-6">
                 <h2 className="mb-6 font-mono text-xl font-bold text-white">RECENT ORDERS</h2>
@@ -152,11 +191,11 @@ export default function Dashboard() {
                 <div className="rounded-2xl border border-white/10 bg-zinc-900/50 p-6 sm:p-8">
                   <div className="mb-8 flex items-center gap-4 border-b border-white/10 pb-6">
                     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/20 text-2xl font-bold text-emerald-400">
-                      {MOCK_USER.first_name[0]}{MOCK_USER.last_name[0]}
+                      {user.first_name[0]}{user.last_name[0]}
                     </div>
                     <div>
-                      <p className="font-sans text-xl font-bold text-white">{MOCK_USER.first_name} {MOCK_USER.last_name}</p>
-                      <p className="font-mono text-sm text-zinc-400">{MOCK_USER.email}</p>
+                      <p className="font-sans text-xl font-bold text-white">{user.first_name} {user.last_name}</p>
+                      <p className="font-mono text-sm text-zinc-400">{user.email}</p>
                     </div>
                   </div>
 
@@ -166,7 +205,7 @@ export default function Dashboard() {
                         <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">FIRST NAME</label>
                         <input
                           type="text"
-                          defaultValue={MOCK_USER.first_name}
+                          defaultValue={user.first_name}
                           className="w-full rounded-lg border border-white/10 bg-black px-4 py-3 font-mono text-sm text-white focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                         />
                       </div>
@@ -174,7 +213,7 @@ export default function Dashboard() {
                         <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">LAST NAME</label>
                         <input
                           type="text"
-                          defaultValue={MOCK_USER.last_name}
+                          defaultValue={user.last_name}
                           className="w-full rounded-lg border border-white/10 bg-black px-4 py-3 font-mono text-sm text-white focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                         />
                       </div>
@@ -182,7 +221,7 @@ export default function Dashboard() {
                         <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">EMAIL ADDRESS</label>
                         <input
                           type="email"
-                          defaultValue={MOCK_USER.email}
+                          defaultValue={user.email}
                           disabled
                           className="w-full cursor-not-allowed rounded-lg border border-white/10 bg-black px-4 py-3 font-mono text-sm text-zinc-500 opacity-50"
                         />

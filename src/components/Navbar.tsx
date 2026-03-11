@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
-import { Shield, ShoppingCart, User, Menu, X } from 'lucide-react';
+import { Shield, ShoppingCart, User, Menu, X, LogIn } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
 
 export default function Navbar() {
   const { totalItems } = useCart();
+  const { isAuthenticated } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -24,8 +26,8 @@ export default function Navbar() {
           <Link to="/store" className="font-mono text-sm font-medium text-zinc-400 transition-colors hover:text-emerald-400">
             [ STORE ]
           </Link>
-          <Link to="/about" className="font-mono text-sm font-medium text-zinc-400 transition-colors hover:text-emerald-400">
-            [ ABOUT ]
+          <Link to="/blog" className="font-mono text-sm font-medium text-zinc-400 transition-colors hover:text-emerald-400">
+            [ INTEL ]
           </Link>
           <div className="flex items-center gap-4 border-l border-white/10 pl-8">
             <Link to="/cart" className="relative text-zinc-400 transition-colors hover:text-white">
@@ -36,9 +38,15 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            <Link to="/dashboard" className="text-zinc-400 transition-colors hover:text-white">
-              <User className="h-5 w-5" />
-            </Link>
+            {isAuthenticated ? (
+              <Link to="/dashboard" className="text-zinc-400 transition-colors hover:text-white">
+                <User className="h-5 w-5" />
+              </Link>
+            ) : (
+              <Link to="/login" className="text-zinc-400 transition-colors hover:text-white">
+                <LogIn className="h-5 w-5" />
+              </Link>
+            )}
           </div>
         </div>
 
@@ -73,19 +81,29 @@ export default function Navbar() {
               [ STORE ]
             </Link>
             <Link
-              to="/about"
+              to="/blog"
               onClick={() => setIsMenuOpen(false)}
               className="font-mono text-sm font-medium text-zinc-400 hover:text-emerald-400"
             >
-              [ ABOUT ]
+              [ INTEL ]
             </Link>
-            <Link
-              to="/dashboard"
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center gap-2 font-mono text-sm font-medium text-zinc-400 hover:text-emerald-400"
-            >
-              <User className="h-4 w-4" /> [ DASHBOARD ]
-            </Link>
+            {isAuthenticated ? (
+              <Link
+                to="/dashboard"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-2 font-mono text-sm font-medium text-zinc-400 hover:text-emerald-400"
+              >
+                <User className="h-4 w-4" /> [ DASHBOARD ]
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-2 font-mono text-sm font-medium text-zinc-400 hover:text-emerald-400"
+              >
+                <LogIn className="h-4 w-4" /> [ LOGIN ]
+              </Link>
+            )}
           </div>
         </div>
       )}

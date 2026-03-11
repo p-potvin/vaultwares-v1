@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { ShieldCheck, CreditCard, Lock, CheckCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function Checkout() {
   const { items, totalPrice, clearCart } = useCart();
+  const { user, token } = useAuth();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
-    email: '',
-    firstName: '',
-    lastName: '',
+    email: user?.email || '',
+    firstName: user?.first_name || '',
+    lastName: user?.last_name || '',
     address: '',
     city: '',
     country: '',
@@ -33,15 +35,21 @@ export default function Checkout() {
     setIsProcessing(true);
 
     try {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const response = await fetch('/api/orders', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({
           items,
           total_amount: totalPrice,
-          user_id: 'u-12345', // Mock user ID
+          user_id: user?.id || 'guest',
         }),
       });
 

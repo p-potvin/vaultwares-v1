@@ -1,28 +1,28 @@
-# cloudbuild-frontend.yaml
+# cloudbuild-backend.yaml
 steps:
-# Build the frontend Docker image
+# Build the backend Docker image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'us-central1-docker.pkg.dev/vaultwares/backend-api-service/backend-api-service:$COMMIT_SHA', './backend-api-service']
+  args: ['build', '-t', '${_REGION}-docker.pkg.dev/vaultwares/backend-api-service/backend-api-service:${_TAG}', '-f', 'cfg/backend/Dockerfile', '.']
 
-# Push the frontend Docker image to Artifact Registry
+# Push the backend Docker image to Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'us-central1-docker.pkg.dev/vaultwares/backend-api-service/backend-api-service:$COMMIT_SHA']
+  args: ['push', '${_REGION}-docker.pkg.dev/vaultwares/backend-api-service/backend-api-service:${_TAG}']
 
-# Deploy the frontend image to Cloud Run
+# Deploy the backend image to Cloud Run
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'gcloud'
   args:
   - 'run'
   - 'deploy'
-  - 'frontend-service'  # Your frontend Cloud Run service name
+  - 'backend-api-service'  # Your backend Cloud Run service name
   - '--image'
-  - '${_REGION}-docker.pkg.dev/vaultwares/backend-api-service/backend-api-service:$COMMIT_SHA'
+  - '${_REGION}-docker.pkg.dev/vaultwares/backend-api-service/backend-api-service:${_TAG}'
   - '--region=${_REGION}'
   - '--platform=managed'
   - '--allow-unauthenticated' # Adjust authentication as needed, often public for frontends
 
 images:
-- 'us-central1-docker.pkg.dev/vaultwares/backend-api-service/backend-api-service:$COMMIT_SHA'
+- '${_REGION}-docker.pkg.dev/vaultwares/backend-api-service/backend-api-service:${_TAG}'
 
 substitutions:
   _REGION: us-central1

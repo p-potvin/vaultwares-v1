@@ -2,7 +2,7 @@
 steps:
 # Build the frontend Docker image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', '${_REGION}-docker.pkg.dev/vaultwares/frontend-service/frontend-service:${_TAG}', './frontend-service']
+  args: ['build', '-t', '${_REGION}-docker.pkg.dev/vaultwares/frontend-service/frontend-service:${_TAG}', '-f', 'cfg/frontend/Dockerfile', '.']
 
 # Push the frontend Docker image to Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'

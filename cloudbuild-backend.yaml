@@ -1,0 +1,29 @@
+# cloudbuild-frontend.yaml
+steps:
+# Build the frontend Docker image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/vaultwares/backend-api-service/backend-api-service:$COMMIT_SHA', './backend-api-service']
+
+# Push the frontend Docker image to Artifact Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-central1-docker.pkg.dev/vaultwares/backend-api-service/backend-api-service:$COMMIT_SHA']
+
+# Deploy the frontend image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: 'gcloud'
+  args:
+  - 'run'
+  - 'deploy'
+  - 'frontend-service'  # Your frontend Cloud Run service name
+  - '--image'
+  - '${_REGION}-docker.pkg.dev/vaultwares/backend-api-service/backend-api-service:$COMMIT_SHA'
+  - '--region=${_REGION}'
+  - '--platform=managed'
+  - '--allow-unauthenticated' # Adjust authentication as needed, often public for frontends
+
+images:
+- 'us-central1-docker.pkg.dev/vaultwares/backend-api-service/backend-api-service:$COMMIT_SHA'
+
+substitutions:
+  _REGION: us-central1
+  _TAG: '$COMMIT_SHA' # You can use $COMMIT_SHA here for unique versions

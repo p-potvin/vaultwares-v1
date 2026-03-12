@@ -54,7 +54,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
             )}
           >
             <ShoppingCart className="h-4 w-4" />
-            {product.inventory_count === 0 ? 'OUT OF STOCK' : 'ADD'}
+            {product.inventory_count === 0 ? 'ÉPUISÉ' : 'AJOUTER'}
           </button>
         </div>
       </div>

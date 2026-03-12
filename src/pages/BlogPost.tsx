@@ -12,9 +12,9 @@ export default function BlogPost() {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center bg-black text-white">
         <h1 className="mb-4 font-mono text-4xl font-bold text-emerald-500">404</h1>
-        <p className="mb-8 text-zinc-400">ARTICLE NOT FOUND</p>
+        <p className="mb-8 text-zinc-400">ARTICLE INTROUVABLE</p>
         <Link to="/blog" className="font-mono text-sm font-bold text-emerald-400 hover:text-emerald-300">
-          [ RETURN TO INTEL ]
+          [ RETOUR AUX INFOS ]
         </Link>
       </div>
     );
@@ -29,7 +29,7 @@ export default function BlogPost() {
     >
       <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
         <Link to="/blog" className="mb-8 inline-flex items-center gap-2 font-mono text-sm font-medium text-zinc-400 hover:text-emerald-400">
-          <ArrowLeft className="h-4 w-4" /> BACK TO INTEL
+          <ArrowLeft className="h-4 w-4" /> RETOUR AUX INFOS
         </Link>
 
         <article className="rounded-2xl border border-white/10 bg-zinc-900/30 p-8 md:p-12">

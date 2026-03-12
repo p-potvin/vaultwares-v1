@@ -14,16 +14,16 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-sm">
-              Securing your digital life with enterprise-grade hardware and software solutions.
+              Sécuriser votre vie numérique avec des solutions matérielles et logicielles de niveau entreprise.
             </p>
           </div>
           
           <div>
-            <h3 className="mb-4 font-mono text-sm font-bold text-white">PRODUCTS</h3>
+            <h3 className="mb-4 font-mono text-sm font-bold text-white">PRODUITS</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/store?category=hardware" className="hover:text-emerald-400">Hardware Security</Link></li>
-              <li><Link to="/store?category=software" className="hover:text-emerald-400">Privacy Software</Link></li>
-              <li><Link to="/store" className="hover:text-emerald-400">All Products</Link></li>
+              <li><Link to="/store?category=hardware" className="hover:text-emerald-400">Sécurité Matérielle</Link></li>
+              <li><Link to="/store?category=software" className="hover:text-emerald-400">Logiciels de Confidentialité</Link></li>
+              <li><Link to="/store" className="hover:text-emerald-400">Tous les Produits</Link></li>
             </ul>
           </div>
 
@@ -31,23 +31,23 @@ export default function Footer() {
             <h3 className="mb-4 font-mono text-sm font-bold text-white">SUPPORT</h3>
             <ul className="space-y-2 text-sm">
               <li><a href="#" className="hover:text-emerald-400">Documentation</a></li>
-              <li><a href="#" className="hover:text-emerald-400">Contact Us</a></li>
-              <li><a href="#" className="hover:text-emerald-400">Returns Policy</a></li>
+              <li><a href="#" className="hover:text-emerald-400">Nous Contacter</a></li>
+              <li><a href="#" className="hover:text-emerald-400">Politique de Retour</a></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="mb-4 font-mono text-sm font-bold text-white">SECURITY</h3>
+            <h3 className="mb-4 font-mono text-sm font-bold text-white">SÉCURITÉ</h3>
             <ul className="space-y-2 text-sm">
-              <li className="flex items-center gap-2"><Lock className="h-4 w-4" /> End-to-End Encrypted</li>
-              <li className="flex items-center gap-2"><Server className="h-4 w-4" /> Zero-Log Policy</li>
-              <li className="flex items-center gap-2"><Cpu className="h-4 w-4" /> Open Source Firmware</li>
+              <li className="flex items-center gap-2"><Lock className="h-4 w-4" /> Chiffrement de Bout en Bout</li>
+              <li className="flex items-center gap-2"><Server className="h-4 w-4" /> Politique Zéro Log</li>
+              <li className="flex items-center gap-2"><Cpu className="h-4 w-4" /> Firmware Open Source</li>
             </ul>
           </div>
         </div>
         
         <div className="mt-12 border-t border-white/10 pt-8 text-center text-xs">
-          <p>&copy; {new Date().getFullYear()} VaultWares Inc. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} VaultWares Inc. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

@@ -16,19 +16,19 @@ export default function Cart() {
     >
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <h1 className="mb-8 font-mono text-4xl font-bold tracking-tighter text-white">
-          SECURE <span className="text-emerald-400">CART</span>
+          PANIER <span className="text-emerald-400">SÉCURISÉ</span>
         </h1>
 
         {items.length === 0 ? (
           <div className="flex min-h-[40vh] flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-zinc-900/20 py-12 text-center">
             <ShoppingCart className="mb-6 h-16 w-16 text-zinc-600" />
-            <h2 className="mb-4 font-mono text-2xl font-bold text-white">YOUR CART IS EMPTY</h2>
-            <p className="mb-8 text-zinc-400">Secure hardware and software await.</p>
+            <h2 className="mb-4 font-mono text-2xl font-bold text-white">VOTRE PANIER EST VIDE</h2>
+            <p className="mb-8 text-zinc-400">Du matériel et des logiciels sécurisés vous attendent.</p>
             <Link
               to="/store"
               className="rounded-lg bg-emerald-500 px-8 py-4 font-mono text-sm font-bold text-black transition-all hover:bg-emerald-400"
             >
-              BROWSE CATALOG
+              PARCOURIR LE CATALOGUE
             </Link>
           </div>
         ) : (
@@ -36,9 +36,9 @@ export default function Cart() {
             <div className="lg:col-span-2">
               <div className="rounded-2xl border border-white/10 bg-zinc-900/50 p-6">
                 <div className="hidden grid-cols-12 gap-4 border-b border-white/10 pb-4 font-mono text-xs font-bold text-zinc-500 sm:grid">
-                  <div className="col-span-6">PRODUCT</div>
-                  <div className="col-span-3 text-center">QUANTITY</div>
-                  <div className="col-span-2 text-right">PRICE</div>
+                  <div className="col-span-6">PRODUIT</div>
+                  <div className="col-span-3 text-center">QUANTITÉ</div>
+                  <div className="col-span-2 text-right">PRIX</div>
                   <div className="col-span-1"></div>
                 </div>
 
@@ -64,7 +64,7 @@ export default function Cart() {
                       </div>
 
                       <div className="col-span-1 flex items-center justify-between sm:col-span-3 sm:justify-center">
-                        <span className="font-mono text-xs text-zinc-500 sm:hidden">QTY:</span>
+                        <span className="font-mono text-xs text-zinc-500 sm:hidden">QTÉ:</span>
                         <div className="flex items-center rounded-lg border border-white/10 bg-black p-1">
                           <button
                             onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
@@ -86,7 +86,7 @@ export default function Cart() {
                       </div>
 
                       <div className="col-span-1 flex items-center justify-between sm:col-span-2 sm:justify-end">
-                        <span className="font-mono text-xs text-zinc-500 sm:hidden">PRICE:</span>
+                        <span className="font-mono text-xs text-zinc-500 sm:hidden">PRIX:</span>
                         <span className="font-mono text-lg font-bold text-emerald-400">
                           ${(item.product.price * item.quantity).toFixed(2)}
                         </span>
@@ -108,20 +108,20 @@ export default function Cart() {
 
             <div className="lg:col-span-1">
               <div className="sticky top-24 rounded-2xl border border-white/10 bg-zinc-900/50 p-6">
-                <h2 className="mb-6 font-mono text-xl font-bold text-white">ORDER SUMMARY</h2>
+                <h2 className="mb-6 font-mono text-xl font-bold text-white">RÉSUMÉ DE LA COMMANDE</h2>
                 
                 <div className="mb-6 space-y-4 border-b border-white/10 pb-6">
                   <div className="flex justify-between text-zinc-400">
-                    <span>Subtotal</span>
+                    <span>Sous-total</span>
                     <span className="font-mono text-white">${totalPrice.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-zinc-400">
-                    <span>Shipping</span>
-                    <span className="font-mono text-emerald-400">Calculated at checkout</span>
+                    <span>Livraison</span>
+                    <span className="font-mono text-emerald-400">Calculé lors du paiement</span>
                   </div>
                   <div className="flex justify-between text-zinc-400">
-                    <span>Tax</span>
-                    <span className="font-mono text-emerald-400">Calculated at checkout</span>
+                    <span>Taxes</span>
+                    <span className="font-mono text-emerald-400">Calculé lors du paiement</span>
                   </div>
                 </div>
 
@@ -134,12 +134,12 @@ export default function Cart() {
                   onClick={() => navigate('/checkout')}
                   className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 font-mono text-sm font-bold text-black transition-all hover:bg-emerald-400"
                 >
-                  PROCEED TO CHECKOUT <ArrowRight className="h-4 w-4" />
+                  PASSER À LA CAISSE <ArrowRight className="h-4 w-4" />
                 </button>
                 
                 <div className="mt-6 flex items-center justify-center gap-2 text-xs text-zinc-500">
                   <ShieldCheck className="h-4 w-4" />
-                  <span>Secure 256-bit encrypted checkout</span>
+                  <span>Paiement sécurisé chiffré en 256 bits</span>
                 </div>
               </div>
             </div>

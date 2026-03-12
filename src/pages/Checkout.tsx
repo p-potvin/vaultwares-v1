@@ -83,23 +83,23 @@ export default function Checkout() {
           className="flex w-full max-w-md flex-col items-center"
         >
           <CheckCircle className="mb-6 h-24 w-24 text-emerald-500" />
-          <h1 className="mb-2 font-mono text-4xl font-bold text-white">PAYMENT SUCCESSFUL</h1>
+          <h1 className="mb-2 font-mono text-4xl font-bold text-white">PAIEMENT RÉUSSI</h1>
           <p className="mb-8 text-zinc-400">
-            Order <span className="font-mono text-emerald-400">{orderId}</span> has been securely processed.
+            La commande <span className="font-mono text-emerald-400">{orderId}</span> a été traitée de manière sécurisée.
           </p>
 
           <div className="w-full space-y-6 rounded-2xl border border-white/10 bg-zinc-900/50 p-6 text-left">
-            <h3 className="font-mono text-lg font-bold text-white">RECEIPT OPTIONS</h3>
+            <h3 className="font-mono text-lg font-bold text-white">OPTIONS DE REÇU</h3>
             
             <button 
               onClick={() => window.print()} 
               className="flex w-full items-center justify-center gap-2 rounded-lg bg-white px-6 py-4 font-mono text-sm font-bold text-black transition-colors hover:bg-zinc-200"
             >
-              <Download className="h-4 w-4" /> SAVE AS PDF / PRINT
+              <Download className="h-4 w-4" /> ENREGISTRER EN PDF / IMPRIMER
             </button>
 
             <div className="border-t border-white/10 pt-6">
-              <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">EMAIL RECEIPT TO:</label>
+              <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">ENVOYER LE REÇU PAR EMAIL À :</label>
               <form onSubmit={handleSendEmail} className="flex gap-2">
                 <input
                   type="email"
@@ -117,7 +117,7 @@ export default function Checkout() {
                 </button>
               </form>
               {emailSent && (
-                <p className="mt-2 font-mono text-xs text-emerald-400">Receipt sent successfully.</p>
+                <p className="mt-2 font-mono text-xs text-emerald-400">Reçu envoyé avec succès.</p>
               )}
             </div>
           </div>
@@ -126,7 +126,7 @@ export default function Checkout() {
             onClick={() => navigate('/')} 
             className="mt-8 flex items-center gap-2 font-mono text-sm font-bold text-zinc-400 transition-colors hover:text-white"
           >
-            RETURN TO STORE <ArrowRight className="h-4 w-4" />
+            RETOUR À LA BOUTIQUE <ArrowRight className="h-4 w-4" />
           </button>
         </motion.div>
       </div>
@@ -148,11 +148,11 @@ export default function Checkout() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="mb-12 border-b border-white/10 pb-8">
           <h1 className="mb-4 font-mono text-4xl font-bold tracking-tighter text-white">
-            SECURE <span className="text-emerald-400">CHECKOUT</span>
+            PAIEMENT <span className="text-emerald-400">SÉCURISÉ</span>
           </h1>
           <div className="flex items-center gap-2 text-sm text-zinc-400">
             <Lock className="h-4 w-4 text-emerald-500" />
-            <span>256-bit AES Encrypted Connection</span>
+            <span>Connexion Chiffrée AES 256 bits</span>
           </div>
         </div>
 
@@ -161,10 +161,10 @@ export default function Checkout() {
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Contact Info */}
               <div className="rounded-2xl border border-white/10 bg-zinc-900/50 p-6 sm:p-8">
-                <h2 className="mb-6 font-mono text-xl font-bold text-white">CONTACT INFORMATION</h2>
+                <h2 className="mb-6 font-mono text-xl font-bold text-white">COORDONNÉES</h2>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <div className="col-span-1 sm:col-span-2">
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">EMAIL ADDRESS</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">ADRESSE EMAIL</label>
                     <input
                       required
                       type="email"
@@ -176,7 +176,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">FIRST NAME</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">PRÉNOM</label>
                     <input
                       required
                       type="text"
@@ -187,7 +187,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">LAST NAME</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">NOM DE FAMILLE</label>
                     <input
                       required
                       type="text"
@@ -202,10 +202,10 @@ export default function Checkout() {
 
               {/* Shipping Info */}
               <div className="rounded-2xl border border-white/10 bg-zinc-900/50 p-6 sm:p-8">
-                <h2 className="mb-6 font-mono text-xl font-bold text-white">SHIPPING ADDRESS</h2>
+                <h2 className="mb-6 font-mono text-xl font-bold text-white">ADRESSE DE LIVRAISON</h2>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <div className="col-span-1 sm:col-span-2">
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">STREET ADDRESS</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">ADRESSE</label>
                     <input
                       required
                       type="text"
@@ -216,7 +216,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">CITY</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">VILLE</label>
                     <input
                       required
                       type="text"
@@ -227,7 +227,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">COUNTRY</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">PAYS</label>
                     <input
                       required
                       type="text"
@@ -238,7 +238,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">POSTAL / ZIP CODE</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">CODE POSTAL</label>
                     <input
                       required
                       type="text"
@@ -254,12 +254,12 @@ export default function Checkout() {
               {/* Payment Info */}
               <div className="rounded-2xl border border-white/10 bg-zinc-900/50 p-6 sm:p-8">
                 <div className="mb-6 flex items-center justify-between">
-                  <h2 className="font-mono text-xl font-bold text-white">PAYMENT DETAILS</h2>
+                  <h2 className="font-mono text-xl font-bold text-white">DÉTAILS DU PAIEMENT</h2>
                   <CreditCard className="h-6 w-6 text-zinc-500" />
                 </div>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <div className="col-span-1 sm:col-span-2">
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">CARD NUMBER</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">NUMÉRO DE CARTE</label>
                     <input
                       required
                       type="text"
@@ -271,7 +271,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">EXPIRY DATE</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">DATE D'EXPIRATION</label>
                     <input
                       required
                       type="text"
@@ -303,11 +303,11 @@ export default function Checkout() {
                 className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 font-mono text-sm font-bold text-black transition-all hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500 print:hidden"
               >
                 {isProcessing ? (
-                  <span className="animate-pulse">PROCESSING ENCRYPTED TRANSACTION...</span>
+                  <span className="animate-pulse">TRAITEMENT DE LA TRANSACTION CHIFFRÉE...</span>
                 ) : (
                   <>
                     <ShieldCheck className="h-5 w-5" />
-                    PAY ${totalPrice.toFixed(2)} SECURELY
+                    PAYER ${totalPrice.toFixed(2)} EN TOUTE SÉCURITÉ
                   </>
                 )}
               </button>
@@ -317,7 +317,7 @@ export default function Checkout() {
           {/* Order Summary Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 rounded-2xl border border-white/10 bg-zinc-900/50 p-6">
-              <h2 className="mb-6 font-mono text-xl font-bold text-white">ORDER SUMMARY</h2>
+              <h2 className="mb-6 font-mono text-xl font-bold text-white">RÉSUMÉ DE LA COMMANDE</h2>
               
               <div className="mb-6 max-h-[40vh] space-y-4 overflow-y-auto border-b border-white/10 pb-6 pr-2">
                 {items.map((item) => (
@@ -348,15 +348,15 @@ export default function Checkout() {
 
               <div className="space-y-4">
                 <div className="flex justify-between text-zinc-400">
-                  <span>Subtotal</span>
+                  <span>Sous-total</span>
                   <span className="font-mono text-white">${totalPrice.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-zinc-400">
-                  <span>Shipping</span>
-                  <span className="font-mono text-white">Free</span>
+                  <span>Livraison</span>
+                  <span className="font-mono text-white">Gratuit</span>
                 </div>
                 <div className="flex justify-between text-zinc-400">
-                  <span>Tax</span>
+                  <span>Taxes</span>
                   <span className="font-mono text-white">$0.00</span>
                 </div>
                 <div className="flex justify-between border-t border-white/10 pt-4">

@@ -14,10 +14,10 @@ export default function Blog() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="mb-12 border-b border-white/10 pb-8">
           <h1 className="mb-4 font-mono text-4xl font-bold tracking-tighter text-white">
-            SECURITY <span className="text-emerald-400">INTEL</span>
+            SÉCURITÉ <span className="text-emerald-400">INFOS</span>
           </h1>
           <p className="max-w-2xl text-zinc-400">
-            Insights, guides, and philosophy on digital privacy, cybersecurity, and reclaiming your autonomy in the digital age.
+            Aperçus, guides et philosophie sur la confidentialité numérique, la cybersécurité et la reconquête de votre autonomie à l'ère numérique.
           </p>
         </div>
 

@@ -57,10 +57,10 @@ export default function Store() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="mb-12 border-b border-white/10 pb-8">
           <h1 className="mb-4 font-mono text-4xl font-bold tracking-tighter text-white">
-            SECURE <span className="text-emerald-400">CATALOG</span>
+            CATALOGUE <span className="text-emerald-400">SÉCURISÉ</span>
           </h1>
           <p className="max-w-2xl text-zinc-400">
-            Browse our selection of privacy-focused hardware and software. All products are vetted for security and come with our zero-log guarantee.
+            Parcourez notre sélection de matériel et de logiciels axés sur la confidentialité. Tous les produits sont vérifiés pour la sécurité et sont accompagnés de notre garantie zéro log.
           </p>
         </div>
 
@@ -73,7 +73,7 @@ export default function Store() {
                 categoryFilter === 'all' ? 'bg-emerald-500 text-black' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white'
               }`}
             >
-              ALL PRODUCTS
+              TOUS LES PRODUITS
             </button>
             <button
               onClick={() => setCategory('hardware')}
@@ -81,7 +81,7 @@ export default function Store() {
                 categoryFilter === 'hardware' ? 'bg-emerald-500 text-black' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white'
               }`}
             >
-              HARDWARE
+              MATÉRIEL
             </button>
             <button
               onClick={() => setCategory('software')}
@@ -89,7 +89,7 @@ export default function Store() {
                 categoryFilter === 'software' ? 'bg-emerald-500 text-black' : 'bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white'
               }`}
             >
-              SOFTWARE
+              LOGICIELS
             </button>
           </div>
 
@@ -99,7 +99,7 @@ export default function Store() {
             </div>
             <input
               type="text"
-              placeholder="Search catalog..."
+              placeholder="Rechercher dans le catalogue..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="block w-full rounded-lg border border-white/10 bg-zinc-900/50 py-2 pl-10 pr-3 font-mono text-sm text-white placeholder-zinc-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
@@ -120,8 +120,8 @@ export default function Store() {
         ) : (
           <div className="flex min-h-[40vh] flex-col items-center justify-center rounded-xl border border-dashed border-white/10 bg-zinc-900/20 py-12 text-center">
             <Search className="mb-4 h-12 w-12 text-zinc-600" />
-            <h3 className="mb-2 font-mono text-lg font-bold text-white">NO RESULTS FOUND</h3>
-            <p className="text-zinc-500">Try adjusting your search or filters.</p>
+            <h3 className="mb-2 font-mono text-lg font-bold text-white">AUCUN RÉSULTAT TROUVÉ</h3>
+            <p className="text-zinc-500">Essayez de modifier votre recherche ou vos filtres.</p>
             <button
               onClick={() => {
                 setSearchQuery('');
@@ -129,7 +129,7 @@ export default function Store() {
               }}
               className="mt-6 font-mono text-sm font-bold text-emerald-400 hover:text-emerald-300"
             >
-              [ CLEAR FILTERS ]
+              [ EFFACER LES FILTRES ]
             </button>
           </div>
         )}

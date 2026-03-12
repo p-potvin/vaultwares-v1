@@ -22,10 +22,10 @@ export default function Navbar() {
         {/* Desktop Nav */}
         <div className="hidden md:flex md:items-center md:gap-8">
           <Link to="/store" className="font-mono text-sm font-medium text-zinc-400 transition-colors hover:text-emerald-400">
-            [ STORE ]
+            [ BOUTIQUE ]
           </Link>
           <Link to="/blog" className="font-mono text-sm font-medium text-zinc-400 transition-colors hover:text-emerald-400">
-            [ INTEL ]
+            [ INFOS ]
           </Link>
           <div className="flex items-center gap-4 border-l border-white/10 pl-8">
             <Link to="/cart" className="relative text-zinc-400 transition-colors hover:text-white">
@@ -67,14 +67,14 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(false)}
               className="font-mono text-sm font-medium text-zinc-400 hover:text-emerald-400"
             >
-              [ STORE ]
+              [ BOUTIQUE ]
             </Link>
             <Link
               to="/blog"
               onClick={() => setIsMenuOpen(false)}
               className="font-mono text-sm font-medium text-zinc-400 hover:text-emerald-400"
             >
-              [ INTEL ]
+              [ INFOS ]
             </Link>
           </div>
         </div>

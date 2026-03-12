@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { useAuth } from '../context/AuthContext';
-import { ShieldCheck, CreditCard, Lock, CheckCircle } from 'lucide-react';
+import { ShieldCheck, CreditCard, Lock, CheckCircle, Download, Mail, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 
 export default function Checkout() {
   const { items, totalPrice, clearCart } = useCart();
-  const { user, token } = useAuth();
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [orderId, setOrderId] = useState('');
+  const [receiptEmail, setReceiptEmail] = useState('');
+  const [emailSent, setEmailSent] = useState(false);
 
   const [formData, setFormData] = useState({
-    email: user?.email || '',
-    firstName: user?.first_name || '',
-    lastName: user?.last_name || '',
+    email: '',
+    firstName: '',
+    lastName: '',
     address: '',
     city: '',
     country: '',
@@ -38,10 +39,6 @@ export default function Checkout() {
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
       };
-      
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
 
       const response = await fetch('/api/orders', {
         method: 'POST',
@@ -49,19 +46,17 @@ export default function Checkout() {
         body: JSON.stringify({
           items,
           total_amount: totalPrice,
-          user_id: user?.id || 'guest',
+          user_id: 'guest',
         }),
       });
 
       if (response.ok) {
+        const generatedOrderId = `ORD-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+        setOrderId(generatedOrderId);
+        setReceiptEmail(formData.email);
         setIsProcessing(false);
         setIsSuccess(true);
         clearCart();
-        
-        // Redirect to dashboard after success
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 3000);
       } else {
         throw new Error('Failed to create order');
       }
@@ -72,22 +67,67 @@ export default function Checkout() {
     }
   };
 
+  const handleSendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!receiptEmail) return;
+    // In a real app, this would trigger the backend to send the email
+    setEmailSent(true);
+  };
+
   if (isSuccess) {
     return (
       <div className="flex min-h-[80vh] flex-col items-center justify-center bg-black text-white px-4 text-center">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="flex flex-col items-center"
+          className="flex w-full max-w-md flex-col items-center"
         >
           <CheckCircle className="mb-6 h-24 w-24 text-emerald-500" />
-          <h1 className="mb-4 font-mono text-4xl font-bold text-white">PAYMENT SUCCESSFUL</h1>
-          <p className="mb-8 max-w-md text-zinc-400">
-            Your order has been securely processed. You will receive an encrypted confirmation email shortly.
+          <h1 className="mb-2 font-mono text-4xl font-bold text-white">PAYMENT SUCCESSFUL</h1>
+          <p className="mb-8 text-zinc-400">
+            Order <span className="font-mono text-emerald-400">{orderId}</span> has been securely processed.
           </p>
-          <div className="rounded-lg border border-white/10 bg-zinc-900/50 px-6 py-4 font-mono text-sm text-zinc-300">
-            Redirecting to your secure dashboard...
+
+          <div className="w-full space-y-6 rounded-2xl border border-white/10 bg-zinc-900/50 p-6 text-left">
+            <h3 className="font-mono text-lg font-bold text-white">RECEIPT OPTIONS</h3>
+            
+            <button 
+              onClick={() => window.print()} 
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-white px-6 py-4 font-mono text-sm font-bold text-black transition-colors hover:bg-zinc-200"
+            >
+              <Download className="h-4 w-4" /> SAVE AS PDF / PRINT
+            </button>
+
+            <div className="border-t border-white/10 pt-6">
+              <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">EMAIL RECEIPT TO:</label>
+              <form onSubmit={handleSendEmail} className="flex gap-2">
+                <input
+                  type="email"
+                  value={receiptEmail}
+                  onChange={(e) => setReceiptEmail(e.target.value)}
+                  placeholder="email@example.com"
+                  className="w-full rounded-lg border border-white/10 bg-black px-4 py-3 font-mono text-sm text-white placeholder-zinc-600 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                />
+                <button 
+                  type="submit"
+                  disabled={emailSent}
+                  className="flex items-center justify-center rounded-lg bg-emerald-500 px-6 font-mono text-sm font-bold text-black transition-colors hover:bg-emerald-400 disabled:bg-zinc-800 disabled:text-zinc-500"
+                >
+                  {emailSent ? <CheckCircle className="h-4 w-4" /> : <Mail className="h-4 w-4" />}
+                </button>
+              </form>
+              {emailSent && (
+                <p className="mt-2 font-mono text-xs text-emerald-400">Receipt sent successfully.</p>
+              )}
+            </div>
           </div>
+
+          <button 
+            onClick={() => navigate('/')} 
+            className="mt-8 flex items-center gap-2 font-mono text-sm font-bold text-zinc-400 transition-colors hover:text-white"
+          >
+            RETURN TO STORE <ArrowRight className="h-4 w-4" />
+          </button>
         </motion.div>
       </div>
     );
@@ -260,7 +300,7 @@ export default function Checkout() {
               <button
                 type="submit"
                 disabled={isProcessing}
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 font-mono text-sm font-bold text-black transition-all hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 font-mono text-sm font-bold text-black transition-all hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500 print:hidden"
               >
                 {isProcessing ? (
                   <span className="animate-pulse">PROCESSING ENCRYPTED TRANSACTION...</span>

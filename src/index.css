@@ -31,3 +31,27 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #10b981; /* emerald-500 */
 }
+
+@media print {
+  body {
+    background-color: #fff;
+    color: #000;
+  }
+  
+  nav, footer, button, .print\:hidden {
+    display: none !important;
+  }
+  
+  .bg-zinc-900\/50, .bg-black {
+    background-color: transparent !important;
+    border: none !important;
+  }
+  
+  .text-white, .text-zinc-400 {
+    color: #000 !important;
+  }
+  
+  .text-emerald-500, .text-emerald-400 {
+    color: #000 !important;
+  }
+}

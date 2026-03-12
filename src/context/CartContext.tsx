@@ -20,12 +20,12 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem('vaultwares_cart');
+    const saved = localStorage.getItem('vw_session');
     return saved ? JSON.parse(saved) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem('vaultwares_cart', JSON.stringify(items));
+    localStorage.setItem('vw_session', JSON.stringify(items));
   }, [items]);
 
   const addToCart = (product: Product, quantity = 1) => {

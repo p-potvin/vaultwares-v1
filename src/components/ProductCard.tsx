@@ -2,11 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '../store/mockData';
 import { useCart } from '../context/CartContext';
-import { ShoppingCart, Cpu, Code } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { Code, Cpu, ShoppingCart } from 'lucide-react';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   const { addToCart } = useCart();
+  const { t } = useTranslation();
 
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-900/50 backdrop-blur-sm transition-all hover:border-emerald-500/50 hover:bg-zinc-900/80">
@@ -19,7 +22,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         />
         <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full bg-black/80 px-3 py-1 font-mono text-xs font-bold uppercase tracking-wider text-emerald-400 backdrop-blur-md">
           {product.category === 'hardware' ? <Cpu className="h-3 w-3" /> : <Code className="h-3 w-3" />}
-          {product.category}
+          {t(product.category.toUpperCase())}
         </div>
       </Link>
 
@@ -54,7 +57,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
             )}
           >
             <ShoppingCart className="h-4 w-4" />
-            {product.inventory_count === 0 ? 'ÉPUISÉ' : 'AJOUTER'}
+            {product.inventory_count === 0 ? t('OUT OF STOCK') : t('ADD')}
           </button>
         </div>
       </div>

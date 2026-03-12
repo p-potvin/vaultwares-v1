@@ -3,8 +3,10 @@ import { Shield, Lock, Server, ArrowRight, EyeOff, Cpu, GlobeLock } from 'lucide
 import { MOCK_PRODUCTS } from '../store/mockData';
 import ProductCard from '../components/ProductCard';
 import { motion } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 
 export default function Home() {
+  const { t } = useTranslation();
   const featuredProducts = MOCK_PRODUCTS.slice(0, 3);
 
   return (
@@ -27,7 +29,7 @@ export default function Home() {
             className="mb-8 flex justify-center"
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 font-mono text-sm font-medium text-emerald-400 backdrop-blur-sm">
-              <Shield className="h-4 w-4" /> REPRENEZ VOTRE AUTONOMIE NUMÉRIQUE
+              <Shield className="h-4 w-4" /> RECLAIM YOUR DIGITAL AUTONOMY
             </span>
           </motion.div>
           
@@ -37,21 +39,21 @@ export default function Home() {
             transition={{ delay: 0.3 }}
             className="mb-8 font-sans text-5xl font-extrabold tracking-tight sm:text-7xl"
           >
-            Sans compromis <br />
+            {t("Uncompromising")} <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
-              Confidentialité & Sécurité
+              {t("Privacy & Security")}
             </span>
           </motion.h1>
-          
+
           <motion.p
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
             className="mx-auto mb-10 max-w-2xl text-lg text-zinc-400 sm:text-xl"
           >
-            VaultWares fournit des Systèmes de Détection d'Intrusion de niveau entreprise, des appareils GrapheneOS, des ordinateurs portables QubesOS et des sentinelles réseau sans télémétrie pour vous protéger de la surveillance corporative et des acteurs malveillants.
+            {t("VaultWares provides enterprise-grade Intrusion Detection Systems, GrapheneOS devices, QubesOS laptops, and zero-telemetry network sentries to protect you from corporate surveillance and malicious actors.")}
           </motion.p>
-          
+
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -62,13 +64,13 @@ export default function Home() {
               to="/store"
               className="group flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 font-mono text-sm font-bold text-black transition-all hover:bg-emerald-400 sm:w-auto"
             >
-              PARCOURIR LE CATALOGUE <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              {t("BROWSE CATALOG")} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
               to="/blog"
               className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-8 py-4 font-mono text-sm font-bold text-white backdrop-blur-sm transition-all hover:bg-white/10 sm:w-auto"
             >
-              LIRE NOS INFOS
+              {t("READ OUR INTEL")}
             </Link>
           </motion.div>
         </div>
@@ -82,22 +84,22 @@ export default function Home() {
               <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400">
                 <EyeOff className="h-8 w-8" />
               </div>
-              <h3 className="mb-4 font-mono text-xl font-bold text-white">Zéro Télémétrie</h3>
-              <p className="text-zinc-400">Notre matériel et nos logiciels sont dépourvus de tout traçage. Pas d'analyse, pas de collecte de données, pas de compromis. Vos données restent sur votre appareil.</p>
+              <h3 className="mb-4 font-mono text-xl font-bold text-white">Zero Telemetry</h3>
+              <p className="text-zinc-400">Our hardware and software are stripped of all tracking. No analytics, no data harvesting, no compromise. Your data stays on your device.</p>
             </div>
             <div className="flex flex-col items-center text-center">
               <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400">
                 <Cpu className="h-8 w-8" />
               </div>
-              <h3 className="mb-4 font-mono text-xl font-bold text-white">Matériel Open Source</h3>
-              <p className="text-zinc-400">La confiance par la transparence. Nos ordinateurs portables et routeurs sont construits sur du matériel et des firmwares open source vérifiables, garantissant l'absence de portes dérobées cachées.</p>
+              <h3 className="mb-4 font-mono text-xl font-bold text-white">Open Source Hardware</h3>
+              <p className="text-zinc-400">Trust through transparency. Our laptops and routers are built on verifiable open-source hardware and firmware, ensuring no hidden backdoors.</p>
             </div>
             <div className="flex flex-col items-center text-center">
               <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400">
                 <GlobeLock className="h-8 w-8" />
               </div>
-              <h3 className="mb-4 font-mono text-xl font-bold text-white">Souveraineté Réseau</h3>
-              <p className="text-zinc-400">Reprenez le contrôle de votre réseau avec nos Systèmes de Détection d'Intrusion et nos Hubs de Confidentialité. Bloquez l'espionnage des FAI et le trafic malveillant à la passerelle.</p>
+              <h3 className="mb-4 font-mono text-xl font-bold text-white">Network Sovereignty</h3>
+              <p className="text-zinc-400">Take back your network with our drop-in Intrusion Detection Systems and Privacy Hubs. Block ISP spying and malicious traffic at the gateway.</p>
             </div>
           </div>
         </div>
@@ -108,11 +110,11 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 flex items-end justify-between border-b border-white/10 pb-6">
             <div>
-              <h2 className="font-mono text-3xl font-bold text-white">MATÉRIEL PHARE</h2>
-              <p className="mt-2 text-zinc-400">Appareils de sécurité haut de gamme pour une protection sans compromis.</p>
+              <h2 className="font-mono text-3xl font-bold text-white">FLAGSHIP HARDWARE</h2>
+              <p className="mt-2 text-zinc-400">Top-tier security devices for uncompromising protection.</p>
             </div>
             <Link to="/store" className="hidden font-mono text-sm font-bold text-emerald-400 hover:text-emerald-300 sm:block">
-              TOUT VOIR [→]
+              VIEW ALL [→]
             </Link>
           </div>
           
@@ -124,7 +126,7 @@ export default function Home() {
           
           <div className="mt-8 text-center sm:hidden">
             <Link to="/store" className="font-mono text-sm font-bold text-emerald-400 hover:text-emerald-300">
-              TOUT VOIR [→]
+              VIEW ALL [→]
             </Link>
           </div>
         </div>

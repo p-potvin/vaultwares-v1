@@ -1,7 +1,9 @@
 import { Shield, Lock, Server, Cpu } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
+  const { t } = useTranslation();
   return (
     <footer className="border-t border-white/10 bg-black py-12 text-zinc-400">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -14,40 +16,39 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-sm">
-              Sécuriser votre vie numérique avec des solutions matérielles et logicielles de niveau entreprise.
+              {t("Securing your digital life with enterprise-grade hardware and software solutions.")}
             </p>
           </div>
-          
+
           <div>
-            <h3 className="mb-4 font-mono text-sm font-bold text-white">PRODUITS</h3>
+            <h3 className="mb-4 font-mono text-sm font-bold text-white">{t("PRODUCTS")}</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/store?category=hardware" className="hover:text-emerald-400">Sécurité Matérielle</Link></li>
-              <li><Link to="/store?category=software" className="hover:text-emerald-400">Logiciels de Confidentialité</Link></li>
-              <li><Link to="/store" className="hover:text-emerald-400">Tous les Produits</Link></li>
+              <li><Link to="/store?category=hardware" className="hover:text-emerald-400">{t("Hardware Security")}</Link></li>
+              <li><Link to="/store?category=software" className="hover:text-emerald-400">{t("Privacy Software")}</Link></li>
+              <li><Link to="/store" className="hover:text-emerald-400">{t("All Products")}</Link></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="mb-4 font-mono text-sm font-bold text-white">SUPPORT</h3>
+            <h3 className="mb-4 font-mono text-sm font-bold text-white">{t("SUPPORT")}</h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="#" className="hover:text-emerald-400">Documentation</a></li>
-              <li><a href="#" className="hover:text-emerald-400">Nous Contacter</a></li>
-              <li><a href="#" className="hover:text-emerald-400">Politique de Retour</a></li>
-            </ul>
+              <li><a href="#" className="hover:text-emerald-400">{t("Documentation")}</a></li>
+              <li><a href="#" className="hover:text-emerald-400">{t("Contact Us")}</a></li>
+              <li><a href="#" className="hover:text-emerald-400">{t("Returns Policy")}</a></li>
           </div>
 
           <div>
-            <h3 className="mb-4 font-mono text-sm font-bold text-white">SÉCURITÉ</h3>
+            <h3 className="mb-4 font-mono text-sm font-bold text-white">SECURITY</h3>
             <ul className="space-y-2 text-sm">
-              <li className="flex items-center gap-2"><Lock className="h-4 w-4" /> Chiffrement de Bout en Bout</li>
-              <li className="flex items-center gap-2"><Server className="h-4 w-4" /> Politique Zéro Log</li>
-              <li className="flex items-center gap-2"><Cpu className="h-4 w-4" /> Firmware Open Source</li>
+              <li className="flex items-center gap-2"><Lock className="h-4 w-4" /> End-to-End Encrypted</li>
+              <li className="flex items-center gap-2"><Server className="h-4 w-4" /> Zero-Log Policy</li>
+              <li className="flex items-center gap-2"><Cpu className="h-4 w-4" /> Open Source Firmware</li>
             </ul>
           </div>
         </div>
         
         <div className="mt-12 border-t border-white/10 pt-8 text-center text-xs">
-          <p>&copy; {new Date().getFullYear()} VaultWares Inc. Tous droits réservés.</p>
+          <p>&copy; {new Date().getFullYear()} VaultWares Inc. All rights reserved.</p>
         </div>
       </div>
     </footer>

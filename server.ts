@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { MOCK_PRODUCTS, MOCK_ORDERS } from './src/store/mockData';
+import { MOCK_PRODUCTS, MOCK_ORDERS } from './src/store/mockData.ts';
 
 dotenv.config();
 

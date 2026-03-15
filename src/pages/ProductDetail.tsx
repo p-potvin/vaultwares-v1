@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 import { ArrowLeft, ShoppingCart, ShieldCheck, Cpu, Code, Package, Loader2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -11,6 +12,7 @@ export default function ProductDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -41,9 +43,9 @@ export default function ProductDetail() {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center bg-black text-white">
         <h1 className="mb-4 font-mono text-4xl font-bold text-emerald-500">404</h1>
-        <p className="mb-8 text-zinc-400">PRODUIT INTROUVABLE</p>
+        <p className="mb-8 text-zinc-400">{t('product.not_found')}</p>
         <Link to="/store" className="font-mono text-sm font-bold text-emerald-400 hover:text-emerald-300">
-          [ RETOUR À LA BOUTIQUE ]
+          [ {t('product.back_to_store')} ]
         </Link>
       </div>
     );
@@ -62,7 +64,7 @@ export default function ProductDetail() {
     >
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <Link to="/store" className="mb-8 inline-flex items-center gap-2 font-mono text-sm font-medium text-zinc-400 hover:text-emerald-400">
-          <ArrowLeft className="h-4 w-4" /> RETOUR AU CATALOGUE
+          <ArrowLeft className="h-4 w-4" /> {t('product.back_to_store')}
         </Link>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
@@ -70,7 +72,7 @@ export default function ProductDetail() {
           <div className="overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/50">
             <img
               src={product.image_url}
-              alt={product.name}
+              alt={t(`products.${product.id}.name`, { defaultValue: product.name })}
               className="h-full w-full object-cover"
               referrerPolicy="no-referrer"
             />
@@ -81,17 +83,21 @@ export default function ProductDetail() {
             <div className="mb-6 flex items-center gap-3">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-zinc-800 px-3 py-1 font-mono text-xs font-bold uppercase tracking-wider text-emerald-400">
                 {product.category === 'hardware' ? <Cpu className="h-3 w-3" /> : <Code className="h-3 w-3" />}
-                {product.category}
+                {product.category === 'hardware' ? t('store.filter_hw') : t('store.filter_sw')}
               </span>
-              <span className="font-mono text-xs text-zinc-500">SKU: {product.sku}</span>
+              <span className="font-mono text-xs text-zinc-500">{t('product.sku')}: {product.sku}</span>
             </div>
 
-            <h1 className="mb-4 font-sans text-4xl font-bold text-white sm:text-5xl">{product.name}</h1>
+            <h1 className="mb-4 font-sans text-4xl font-bold text-white sm:text-5xl">
+              {t(`products.${product.id}.name`, { defaultValue: product.name })}
+            </h1>
             <p className="mb-8 font-mono text-3xl font-bold text-emerald-400">${product.price.toFixed(2)}</p>
 
             <div className="mb-8 border-y border-white/10 py-6">
               <h3 className="mb-4 font-mono text-sm font-bold text-zinc-400">DESCRIPTION</h3>
-              <p className="text-lg leading-relaxed text-zinc-300">{product.description}</p>
+              <p className="text-lg leading-relaxed text-zinc-300">
+                {t(`products.${product.id}.desc`, { defaultValue: product.description })}
+              </p>
             </div>
 
             <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -120,21 +126,21 @@ export default function ProductDetail() {
                 className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 font-mono text-sm font-bold text-black transition-all hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500"
               >
                 <ShoppingCart className="h-5 w-5" />
-                {product.inventory_count === 0 ? 'ÉPUISÉ' : 'AJOUTER AU PANIER'}
+                {product.inventory_count === 0 ? t('product.out_of_stock') : t('product.add_to_cart')}
               </button>
             </div>
 
             <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-8">
               <div className="flex items-center gap-3 text-sm text-zinc-400">
                 <ShieldCheck className="h-5 w-5 text-emerald-500" />
-                <span>Sécurité Vérifiée</span>
+                <span>{t('footer.sec_e2e')}</span>
               </div>
               <div className="flex items-center gap-3 text-sm text-zinc-400">
                 <Package className="h-5 w-5 text-emerald-500" />
                 <span>
                   {product.inventory_count > 0
-                    ? `${product.inventory_count} en stock`
-                    : 'Actuellement indisponible'}
+                    ? `${product.inventory_count} ${t('product.in_stock')}`
+                    : t('product.out_of_stock')}
                 </span>
               </div>
             </div>

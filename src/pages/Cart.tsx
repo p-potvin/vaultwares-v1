@@ -2,10 +2,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { Trash2, ArrowRight, ShoppingCart, ShieldCheck } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 
 export default function Cart() {
   const { items, updateQuantity, removeFromCart, totalPrice } = useCart();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <motion.div
@@ -16,19 +18,19 @@ export default function Cart() {
     >
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <h1 className="mb-8 font-mono text-4xl font-bold tracking-tighter text-white">
-          PANIER <span className="text-emerald-400">SÉCURISÉ</span>
+          {t('cart.title')}
         </h1>
 
         {items.length === 0 ? (
           <div className="flex min-h-[40vh] flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-zinc-900/20 py-12 text-center">
             <ShoppingCart className="mb-6 h-16 w-16 text-zinc-600" />
-            <h2 className="mb-4 font-mono text-2xl font-bold text-white">VOTRE PANIER EST VIDE</h2>
-            <p className="mb-8 text-zinc-400">Du matériel et des logiciels sécurisés vous attendent.</p>
+            <h2 className="mb-4 font-mono text-2xl font-bold text-white">{t('cart.empty')}</h2>
+            <p className="mb-8 text-zinc-400">{t('cart.empty_desc')}</p>
             <Link
               to="/store"
               className="rounded-lg bg-emerald-500 px-8 py-4 font-mono text-sm font-bold text-black transition-all hover:bg-emerald-400"
             >
-              PARCOURIR LE CATALOGUE
+              {t('cart.browse')}
             </Link>
           </div>
         ) : (
@@ -57,9 +59,9 @@ export default function Cart() {
                             to={`/product/${item.product.id}`}
                             className="font-sans text-lg font-bold text-white hover:text-emerald-400"
                           >
-                            {item.product.name}
+                            {t(`products.${item.product.id}.name`, { defaultValue: item.product.name })}
                           </Link>
-                          <p className="font-mono text-xs text-zinc-500">SKU: {item.product.sku}</p>
+                          <p className="font-mono text-xs text-zinc-500">{t('product.sku')}: {item.product.sku}</p>
                         </div>
                       </div>
 
@@ -108,25 +110,21 @@ export default function Cart() {
 
             <div className="lg:col-span-1">
               <div className="sticky top-24 rounded-2xl border border-white/10 bg-zinc-900/50 p-6">
-                <h2 className="mb-6 font-mono text-xl font-bold text-white">RÉSUMÉ DE LA COMMANDE</h2>
+                <h2 className="mb-6 font-mono text-xl font-bold text-white">{t('cart.summary')}</h2>
                 
                 <div className="mb-6 space-y-4 border-b border-white/10 pb-6">
                   <div className="flex justify-between text-zinc-400">
-                    <span>Sous-total</span>
+                    <span>{t('cart.subtotal')}</span>
                     <span className="font-mono text-white">${totalPrice.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-zinc-400">
-                    <span>Livraison</span>
-                    <span className="font-mono text-emerald-400">Calculé lors du paiement</span>
-                  </div>
-                  <div className="flex justify-between text-zinc-400">
-                    <span>Taxes</span>
-                    <span className="font-mono text-emerald-400">Calculé lors du paiement</span>
+                    <span>{t('cart.shipping')}</span>
+                    <span className="font-mono text-emerald-400">{t('cart.shipping_calc')}</span>
                   </div>
                 </div>
 
                 <div className="mb-8 flex justify-between">
-                  <span className="font-sans text-xl font-bold text-white">Total</span>
+                  <span className="font-sans text-xl font-bold text-white">{t('cart.total')}</span>
                   <span className="font-mono text-2xl font-bold text-emerald-400">${totalPrice.toFixed(2)}</span>
                 </div>
 
@@ -134,7 +132,7 @@ export default function Cart() {
                   onClick={() => navigate('/checkout')}
                   className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 font-mono text-sm font-bold text-black transition-all hover:bg-emerald-400"
                 >
-                  PASSER À LA CAISSE <ArrowRight className="h-4 w-4" />
+                  {t('cart.checkout')} <ArrowRight className="h-4 w-4" />
                 </button>
                 
                 <div className="mt-6 flex items-center justify-center gap-2 text-xs text-zinc-500">

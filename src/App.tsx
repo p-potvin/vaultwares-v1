@@ -14,10 +14,8 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
-import { useTranslation } from 'react-i18next';
 
 export default function App() {
-  const { t } = useTranslation();
   return (
     <CartProvider>
       <Router>
@@ -35,7 +33,7 @@ export default function App() {
               <Route path="*" element={
                 <div className="flex min-h-[60vh] flex-col items-center justify-center">
                   <h1 className="font-mono text-4xl font-bold text-emerald-500">404</h1>
-                  <p className="text-zinc-400">{t("PAGE NOT FOUND")}</p>
+                  <p className="text-zinc-400">PAGE INTROUVABLE</p>
                 </div>
               } />
             </Routes>

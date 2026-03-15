@@ -14,7 +14,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 'p-sentry-ids',
     name: 'Aegis Network Sentry (IDS)',
-    description: 'A drop-in Intrusion Detection System (IDS) gateway that analyzes network packets in real-time. Powered by a high-performance quad-core processor, 8GB RAM, and a 128GB NVMe SSD, it handles gigabit speeds (1Gbps) effortlessly. Detects malicious patterns and alerts you instantly via email. Perfect for small businesses and privacy-conscious homes. Zero telemetry, absolutely no tracking. Optional secure remote support available.',
+    description: 'Un système de détection d\'intrusion (IDS) passerelle prêt à l\'emploi qui analyse les paquets réseau en temps réel. Propulsé par un processeur quad-core haute performance, 8 Go de RAM et un SSD NVMe de 128 Go, il gère les vitesses gigabit (1 Gbps) sans effort. Détecte les modèles malveillants et vous alerte instantanément par e-mail. Parfait pour les petites entreprises et les foyers soucieux de la confidentialité. Zéro télémétrie, absolument aucun suivi. Support à distance sécurisé en option disponible.',
     sku: 'AEGIS-IDS-01',
     price: 299.99,
     inventory_count: 50,
@@ -25,7 +25,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 'p-privacy-hub',
     name: 'Aegis Privacy Hub',
-    description: 'Take back your network. This drop-in gateway features network-wide AdGuard ad-blocking, a built-in WireGuard VPN client, and military-grade DNS encryption. Prevent your ISP from spying on your traffic and block trackers before they reach your devices. Can be used standalone or seamlessly integrated with the Aegis Network Sentry.',
+    description: 'Reprenez le contrôle de votre réseau. Cette passerelle prête à l\'emploi comprend un bloqueur de publicités AdGuard à l\'échelle du réseau, un client VPN WireGuard intégré et un cryptage DNS de niveau militaire. Empêchez votre FAI d\'espionner votre trafic et bloquez les traqueurs avant qu\'ils n\'atteignent vos appareils. Peut être utilisé seul ou intégré de manière transparente avec l\'Aegis Network Sentry.',
     sku: 'AEGIS-PRV-01',
     price: 249.99,
     inventory_count: 75,
@@ -35,8 +35,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: 'p-nomad-router',
-    name: 'Nomad Secure Mobile Router',
-    description: 'Complete anonymity wherever you go. A portable Wi-Fi router featuring full traffic encryption and a pre-configured, untraceable eSIM not linked to your identity. Create a secure, private network bubble in any hotel, cafe, or airport.',
+    name: 'Routeur Mobile Sécurisé Nomad',
+    description: 'Anonymat complet où que vous alliez. Un routeur Wi-Fi portable doté d\'un cryptage de trafic complet et d\'une eSIM préconfigurée et intraçable, non liée à votre identité. Créez une bulle réseau privée et sécurisée dans n\'importe quel hôtel, café ou aéroport.',
     sku: 'NOMAD-MR-01',
     price: 349.99,
     inventory_count: 30,
@@ -47,7 +47,7 @@ export const MOCK_PRODUCTS: Product[] = [
   {
     id: 'p-phantom-pixel',
     name: 'Phantom Pixel 8 (GrapheneOS)',
-    description: 'A premium refurbished Google Pixel 8, professionally flashed with GrapheneOS. Stripped of all Google Play Services and tracking telemetry. Experience the pinnacle of mobile privacy without sacrificing modern smartphone capabilities.',
+    description: 'Un Google Pixel 8 reconditionné haut de gamme, flashé par des professionnels avec GrapheneOS. Dépouillé de tous les services Google Play et de la télémétrie de suivi. Découvrez le summum de la confidentialité mobile sans sacrifier les capacités des smartphones modernes.',
     sku: 'PHANTOM-P8-01',
     price: 599.99,
     inventory_count: 15,
@@ -57,8 +57,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: 'p-libre-book',
-    name: 'LibreBook Secure Laptop (QubesOS)',
-    description: 'Security through compartmentalization. A laptop built entirely from open-source hardware components, running QubesOS out of the box. Isolate your work, personal, and secure environments into hardware-enforced virtual machines.',
+    name: 'Ordinateur Portable Sécurisé LibreBook (QubesOS)',
+    description: 'La sécurité par le cloisonnement. Un ordinateur portable entièrement construit à partir de composants matériels open source, fonctionnant sous QubesOS dès la sortie de la boîte. Isolez vos environnements de travail, personnels et sécurisés dans des machines virtuelles appliquées par le matériel.',
     sku: 'LIBRE-QB-01',
     price: 1499.99,
     inventory_count: 10,
@@ -68,8 +68,8 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: 'p-filter-list',
-    name: 'VaultWares Ultimate Filter List',
-    description: 'A meticulously curated filter list for uBlock Origin and AdGuard. Over a year in the making, this list provides maximum security against trackers and malware domains while manually fixing breakages on popular websites for maximum usability. Delivered as a secure, auto-updating subscription link.',
+    name: 'Liste de Filtres Ultime VaultWares',
+    description: 'Une liste de filtres méticuleusement organisée pour uBlock Origin et AdGuard. Plus d\'un an de préparation, cette liste offre une sécurité maximale contre les traqueurs et les domaines malveillants tout en corrigeant manuellement les pannes sur les sites Web populaires pour une utilisation maximale. Livré sous forme de lien d\'abonnement sécurisé à mise à jour automatique.',
     sku: 'VW-FILTER-01',
     price: 19.99,
     inventory_count: 9999,

@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { ShieldCheck, CreditCard, Lock, CheckCircle, Download, Mail, ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 
 export default function Checkout() {
   const { items, totalPrice, clearCart } = useCart();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [orderId, setOrderId] = useState('');
@@ -83,23 +85,23 @@ export default function Checkout() {
           className="flex w-full max-w-md flex-col items-center"
         >
           <CheckCircle className="mb-6 h-24 w-24 text-emerald-500" />
-          <h1 className="mb-2 font-mono text-4xl font-bold text-white">PAIEMENT RÉUSSI</h1>
+          <h1 className="mb-2 font-mono text-4xl font-bold text-white">{t('checkout.success')}</h1>
           <p className="mb-8 text-zinc-400">
-            La commande <span className="font-mono text-emerald-400">{orderId}</span> a été traitée de manière sécurisée.
+            {t('checkout.order_processed')} <span className="font-mono text-emerald-400">{orderId}</span>
           </p>
 
           <div className="w-full space-y-6 rounded-2xl border border-white/10 bg-zinc-900/50 p-6 text-left">
-            <h3 className="font-mono text-lg font-bold text-white">OPTIONS DE REÇU</h3>
+            <h3 className="font-mono text-lg font-bold text-white">{t('checkout.receipt_options')}</h3>
             
             <button 
               onClick={() => window.print()} 
               className="flex w-full items-center justify-center gap-2 rounded-lg bg-white px-6 py-4 font-mono text-sm font-bold text-black transition-colors hover:bg-zinc-200"
             >
-              <Download className="h-4 w-4" /> ENREGISTRER EN PDF / IMPRIMER
+              <Download className="h-4 w-4" /> {t('checkout.save_pdf')}
             </button>
 
             <div className="border-t border-white/10 pt-6">
-              <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">ENVOYER LE REÇU PAR EMAIL À :</label>
+              <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">{t('checkout.email_receipt')}</label>
               <form onSubmit={handleSendEmail} className="flex gap-2">
                 <input
                   type="email"
@@ -117,7 +119,7 @@ export default function Checkout() {
                 </button>
               </form>
               {emailSent && (
-                <p className="mt-2 font-mono text-xs text-emerald-400">Reçu envoyé avec succès.</p>
+                <p className="mt-2 font-mono text-xs text-emerald-400">{t('checkout.receipt_sent')}</p>
               )}
             </div>
           </div>
@@ -126,7 +128,7 @@ export default function Checkout() {
             onClick={() => navigate('/')} 
             className="mt-8 flex items-center gap-2 font-mono text-sm font-bold text-zinc-400 transition-colors hover:text-white"
           >
-            RETOUR À LA BOUTIQUE <ArrowRight className="h-4 w-4" />
+            {t('checkout.back_to_store')} <ArrowRight className="h-4 w-4" />
           </button>
         </motion.div>
       </div>
@@ -148,11 +150,11 @@ export default function Checkout() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="mb-12 border-b border-white/10 pb-8">
           <h1 className="mb-4 font-mono text-4xl font-bold tracking-tighter text-white">
-            PAIEMENT <span className="text-emerald-400">SÉCURISÉ</span>
+            {t('checkout.title')}
           </h1>
           <div className="flex items-center gap-2 text-sm text-zinc-400">
             <Lock className="h-4 w-4 text-emerald-500" />
-            <span>Connexion Chiffrée AES 256 bits</span>
+            <span>{t('checkout.secure_connection')}</span>
           </div>
         </div>
 
@@ -161,10 +163,10 @@ export default function Checkout() {
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Contact Info */}
               <div className="rounded-2xl border border-white/10 bg-zinc-900/50 p-6 sm:p-8">
-                <h2 className="mb-6 font-mono text-xl font-bold text-white">COORDONNÉES</h2>
+                <h2 className="mb-6 font-mono text-xl font-bold text-white">{t('checkout.contact_info')}</h2>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <div className="col-span-1 sm:col-span-2">
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">ADRESSE EMAIL</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">{t('checkout.email')}</label>
                     <input
                       required
                       type="email"
@@ -176,7 +178,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">PRÉNOM</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">{t('checkout.first_name')}</label>
                     <input
                       required
                       type="text"
@@ -187,7 +189,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">NOM DE FAMILLE</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">{t('checkout.last_name')}</label>
                     <input
                       required
                       type="text"
@@ -202,10 +204,10 @@ export default function Checkout() {
 
               {/* Shipping Info */}
               <div className="rounded-2xl border border-white/10 bg-zinc-900/50 p-6 sm:p-8">
-                <h2 className="mb-6 font-mono text-xl font-bold text-white">ADRESSE DE LIVRAISON</h2>
+                <h2 className="mb-6 font-mono text-xl font-bold text-white">{t('checkout.shipping_address')}</h2>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <div className="col-span-1 sm:col-span-2">
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">ADRESSE</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">{t('checkout.address')}</label>
                     <input
                       required
                       type="text"
@@ -216,7 +218,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">VILLE</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">{t('checkout.city')}</label>
                     <input
                       required
                       type="text"
@@ -227,7 +229,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">PAYS</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">{t('checkout.country')}</label>
                     <input
                       required
                       type="text"
@@ -238,7 +240,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">CODE POSTAL</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">{t('checkout.zip')}</label>
                     <input
                       required
                       type="text"
@@ -254,12 +256,12 @@ export default function Checkout() {
               {/* Payment Info */}
               <div className="rounded-2xl border border-white/10 bg-zinc-900/50 p-6 sm:p-8">
                 <div className="mb-6 flex items-center justify-between">
-                  <h2 className="font-mono text-xl font-bold text-white">DÉTAILS DU PAIEMENT</h2>
+                  <h2 className="font-mono text-xl font-bold text-white">{t('checkout.payment_details')}</h2>
                   <CreditCard className="h-6 w-6 text-zinc-500" />
                 </div>
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <div className="col-span-1 sm:col-span-2">
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">NUMÉRO DE CARTE</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">{t('checkout.card_number')}</label>
                     <input
                       required
                       type="text"
@@ -271,7 +273,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">DATE D'EXPIRATION</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">{t('checkout.expiry')}</label>
                     <input
                       required
                       type="text"
@@ -283,7 +285,7 @@ export default function Checkout() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">CVC</label>
+                    <label className="mb-2 block font-mono text-xs font-bold text-zinc-400">{t('checkout.cvc')}</label>
                     <input
                       required
                       type="text"
@@ -303,11 +305,11 @@ export default function Checkout() {
                 className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 font-mono text-sm font-bold text-black transition-all hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-zinc-800 disabled:text-zinc-500 print:hidden"
               >
                 {isProcessing ? (
-                  <span className="animate-pulse">TRAITEMENT DE LA TRANSACTION CHIFFRÉE...</span>
+                  <span className="animate-pulse">{t('checkout.processing')}</span>
                 ) : (
                   <>
                     <ShieldCheck className="h-5 w-5" />
-                    PAYER ${totalPrice.toFixed(2)} EN TOUTE SÉCURITÉ
+                    {t('checkout.pay_securely', { total: totalPrice.toFixed(2) })}
                   </>
                 )}
               </button>
@@ -317,7 +319,7 @@ export default function Checkout() {
           {/* Order Summary Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 rounded-2xl border border-white/10 bg-zinc-900/50 p-6">
-              <h2 className="mb-6 font-mono text-xl font-bold text-white">RÉSUMÉ DE LA COMMANDE</h2>
+              <h2 className="mb-6 font-mono text-xl font-bold text-white">{t('cart.summary')}</h2>
               
               <div className="mb-6 max-h-[40vh] space-y-4 overflow-y-auto border-b border-white/10 pb-6 pr-2">
                 {items.map((item) => (
@@ -335,7 +337,7 @@ export default function Checkout() {
                         </span>
                       </div>
                       <div>
-                        <p className="line-clamp-2 font-sans text-sm font-bold text-white">{item.product.name}</p>
+                        <p className="line-clamp-2 font-sans text-sm font-bold text-white">{t(`products.${item.product.id}.name`, { defaultValue: item.product.name })}</p>
                         <p className="font-mono text-xs text-zinc-500">{item.product.sku}</p>
                       </div>
                     </div>
@@ -348,19 +350,19 @@ export default function Checkout() {
 
               <div className="space-y-4">
                 <div className="flex justify-between text-zinc-400">
-                  <span>Sous-total</span>
+                  <span>{t('cart.subtotal')}</span>
                   <span className="font-mono text-white">${totalPrice.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-zinc-400">
-                  <span>Livraison</span>
-                  <span className="font-mono text-white">Gratuit</span>
+                  <span>{t('cart.shipping')}</span>
+                  <span className="font-mono text-white">{t('checkout.free')}</span>
                 </div>
                 <div className="flex justify-between text-zinc-400">
-                  <span>Taxes</span>
+                  <span>{t('cart.taxes')}</span>
                   <span className="font-mono text-white">$0.00</span>
                 </div>
                 <div className="flex justify-between border-t border-white/10 pt-4">
-                  <span className="font-sans text-xl font-bold text-white">Total</span>
+                  <span className="font-sans text-xl font-bold text-white">{t('cart.total')}</span>
                   <span className="font-mono text-2xl font-bold text-emerald-400">${totalPrice.toFixed(2)}</span>
                 </div>
               </div>

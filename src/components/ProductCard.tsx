@@ -2,10 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Product } from '../store/mockData';
 import { useCart } from '../context/CartContext';
-import { Code, Cpu, ShoppingCart } from 'lucide-react';
-import React from 'react';
+import { ShoppingCart, Cpu, Code } from 'lucide-react';
+import { cn } from '../lib/utils';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   const { addToCart } = useCart();
@@ -22,7 +21,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         />
         <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full bg-black/80 px-3 py-1 font-mono text-xs font-bold uppercase tracking-wider text-emerald-400 backdrop-blur-md">
           {product.category === 'hardware' ? <Cpu className="h-3 w-3" /> : <Code className="h-3 w-3" />}
-          {t(product.category.toUpperCase())}
+          {product.category === 'hardware' ? t('store.filter_hw') : t('store.filter_sw')}
         </div>
       </Link>
 
@@ -30,7 +29,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         <div className="mb-2 flex items-start justify-between gap-4">
           <Link to={`/product/${product.id}`}>
             <h3 className="font-sans text-lg font-bold text-white transition-colors hover:text-emerald-400">
-              {product.name}
+              {t(`products.${product.id}.name`, { defaultValue: product.name })}
             </h3>
           </Link>
           <span className="font-mono text-lg font-bold text-white">
@@ -39,12 +38,12 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         </div>
 
         <p className="mb-6 line-clamp-2 flex-1 text-sm text-zinc-400">
-          {product.description}
+          {t(`products.${product.id}.desc`, { defaultValue: product.description })}
         </p>
 
         <div className="flex items-center justify-between border-t border-white/10 pt-4">
           <span className="font-mono text-xs text-zinc-500">
-            SKU: {product.sku}
+            {t('product.sku')}: {product.sku}
           </span>
           <button
             onClick={() => addToCart(product)}
@@ -57,7 +56,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
             )}
           >
             <ShoppingCart className="h-4 w-4" />
-            {product.inventory_count === 0 ? t('OUT OF STOCK') : t('ADD')}
+            {product.inventory_count === 0 ? t('product.out_of_stock') : t('common.add')}
           </button>
         </div>
       </div>

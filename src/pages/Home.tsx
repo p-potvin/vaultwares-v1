@@ -6,8 +6,8 @@ import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 
 export default function Home() {
-  const { t } = useTranslation();
   const featuredProducts = MOCK_PRODUCTS.slice(0, 3);
+  const { t } = useTranslation();
 
   return (
     <motion.div
@@ -29,7 +29,7 @@ export default function Home() {
             className="mb-8 flex justify-center"
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 font-mono text-sm font-medium text-emerald-400 backdrop-blur-sm">
-              <Shield className="h-4 w-4" /> RECLAIM YOUR DIGITAL AUTONOMY
+              <Shield className="h-4 w-4" /> {t('home.hero_tag')}
             </span>
           </motion.div>
           
@@ -39,21 +39,21 @@ export default function Home() {
             transition={{ delay: 0.3 }}
             className="mb-8 font-sans text-5xl font-extrabold tracking-tight sm:text-7xl"
           >
-            {t("Uncompromising")} <br />
+            {t('home.hero_title_1')} <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">
-              {t("Privacy & Security")}
+              {t('home.hero_title_2')}
             </span>
           </motion.h1>
-
+          
           <motion.p
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
             className="mx-auto mb-10 max-w-2xl text-lg text-zinc-400 sm:text-xl"
           >
-            {t("VaultWares provides enterprise-grade Intrusion Detection Systems, GrapheneOS devices, QubesOS laptops, and zero-telemetry network sentries to protect you from corporate surveillance and malicious actors.")}
+            {t('home.hero_desc')}
           </motion.p>
-
+          
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -64,13 +64,13 @@ export default function Home() {
               to="/store"
               className="group flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 font-mono text-sm font-bold text-black transition-all hover:bg-emerald-400 sm:w-auto"
             >
-              {t("BROWSE CATALOG")} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              {t('home.btn_catalog')} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
               to="/blog"
               className="flex w-full items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-8 py-4 font-mono text-sm font-bold text-white backdrop-blur-sm transition-all hover:bg-white/10 sm:w-auto"
             >
-              {t("READ OUR INTEL")}
+              {t('home.btn_intel')}
             </Link>
           </motion.div>
         </div>
@@ -84,22 +84,22 @@ export default function Home() {
               <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400">
                 <EyeOff className="h-8 w-8" />
               </div>
-              <h3 className="mb-4 font-mono text-xl font-bold text-white">Zero Telemetry</h3>
-              <p className="text-zinc-400">Our hardware and software are stripped of all tracking. No analytics, no data harvesting, no compromise. Your data stays on your device.</p>
+              <h3 className="mb-4 font-mono text-xl font-bold text-white">{t('home.feat_1_title')}</h3>
+              <p className="text-zinc-400">{t('home.feat_1_desc')}</p>
             </div>
             <div className="flex flex-col items-center text-center">
               <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400">
                 <Cpu className="h-8 w-8" />
               </div>
-              <h3 className="mb-4 font-mono text-xl font-bold text-white">Open Source Hardware</h3>
-              <p className="text-zinc-400">Trust through transparency. Our laptops and routers are built on verifiable open-source hardware and firmware, ensuring no hidden backdoors.</p>
+              <h3 className="mb-4 font-mono text-xl font-bold text-white">{t('home.feat_2_title')}</h3>
+              <p className="text-zinc-400">{t('home.feat_2_desc')}</p>
             </div>
             <div className="flex flex-col items-center text-center">
               <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/10 text-emerald-400">
                 <GlobeLock className="h-8 w-8" />
               </div>
-              <h3 className="mb-4 font-mono text-xl font-bold text-white">Network Sovereignty</h3>
-              <p className="text-zinc-400">Take back your network with our drop-in Intrusion Detection Systems and Privacy Hubs. Block ISP spying and malicious traffic at the gateway.</p>
+              <h3 className="mb-4 font-mono text-xl font-bold text-white">{t('home.feat_3_title')}</h3>
+              <p className="text-zinc-400">{t('home.feat_3_desc')}</p>
             </div>
           </div>
         </div>
@@ -110,11 +110,11 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-12 flex items-end justify-between border-b border-white/10 pb-6">
             <div>
-              <h2 className="font-mono text-3xl font-bold text-white">FLAGSHIP HARDWARE</h2>
-              <p className="mt-2 text-zinc-400">Top-tier security devices for uncompromising protection.</p>
+              <h2 className="font-mono text-3xl font-bold text-white">{t('home.featured_hw')}</h2>
+              <p className="mt-2 text-zinc-400">{t('home.featured_hw_desc')}</p>
             </div>
             <Link to="/store" className="hidden font-mono text-sm font-bold text-emerald-400 hover:text-emerald-300 sm:block">
-              VIEW ALL [→]
+              {t('home.view_all')}
             </Link>
           </div>
           
@@ -126,7 +126,7 @@ export default function Home() {
           
           <div className="mt-8 text-center sm:hidden">
             <Link to="/store" className="font-mono text-sm font-bold text-emerald-400 hover:text-emerald-300">
-              VIEW ALL [→]
+              {t('home.view_all')}
             </Link>
           </div>
         </div>

@@ -16,10 +16,10 @@ export default function Blog() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="mb-12 border-b border-white/10 pb-8">
           <h1 className="mb-4 font-mono text-4xl font-bold tracking-tighter text-white">
-            SECURITY <span className="text-emerald-400">INTEL</span>
+            {t('blog.title')}
           </h1>
           <p className="max-w-2xl text-zinc-400">
-            {t("Insights, guides, and philosophy on digital privacy, cybersecurity, and reclaiming your autonomy in the digital age.")}
+            {t('blog.desc')}
           </p>
         </div>
 
@@ -33,7 +33,7 @@ export default function Blog() {
               <div>
                 <div className="mb-4 flex items-center justify-between">
                   <span className="inline-flex items-center rounded-full bg-zinc-800 px-3 py-1 font-mono text-xs font-bold uppercase tracking-wider text-emerald-400">
-                    {t(post.category)}
+                    {t(`posts.${post.id}.category`, { defaultValue: post.category })}
                   </span>
                   <div className="flex items-center gap-1 font-mono text-xs text-zinc-500">
                     <Calendar className="h-3 w-3" />
@@ -41,10 +41,10 @@ export default function Blog() {
                   </div>
                 </div>
                 <h2 className="mb-3 font-sans text-xl font-bold leading-tight text-white group-hover:text-emerald-400 transition-colors">
-                  {t(post.title)}
+                  {t(`posts.${post.id}.title`, { defaultValue: post.title })}
                 </h2>
                 <p className="mb-6 text-sm text-zinc-400 line-clamp-3">
-                  {t(post.excerpt)}
+                  {t(`posts.${post.id}.excerpt`, { defaultValue: post.excerpt })}
                 </p>
               </div>
               <div className="flex items-center gap-2 border-t border-white/10 pt-4 font-mono text-xs text-zinc-500">

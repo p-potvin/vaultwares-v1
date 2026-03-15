@@ -28,17 +28,18 @@ export default function Navbar() {
         {/* Desktop Nav */}
         <div className="hidden md:flex md:items-center md:gap-8">
           <Link to="/store" className="font-mono text-sm font-medium text-zinc-400 transition-colors hover:text-emerald-400">
-            {t('[ STORE ]')}
+            {t('nav.store')}
           </Link>
           <Link to="/blog" className="font-mono text-sm font-medium text-zinc-400 transition-colors hover:text-emerald-400">
-            {t('[ INTEL ]')}
+            {t('nav.intel')}
           </Link>
           <div className="flex items-center gap-4 border-l border-white/10 pl-8">
             <button 
-              onClick={toggleLanguage} 
-              className="flex items-center gap-2 font-mono text-sm font-bold text-zinc-400 transition-colors hover:text-white"
+              onClick={toggleLanguage}
+              className="flex items-center gap-1 font-mono text-xs font-medium text-zinc-400 transition-colors hover:text-emerald-400"
             >
-              <Globe className="h-4 w-4" /> {i18n.language.toUpperCase()}
+              <Globe className="h-4 w-4" />
+              {i18n.language.toUpperCase()}
             </button>
             <Link to="/cart" className="relative text-zinc-400 transition-colors hover:text-white">
               <ShoppingCart className="h-5 w-5" />
@@ -54,9 +55,10 @@ export default function Navbar() {
         {/* Mobile menu button */}
         <div className="flex items-center gap-4 md:hidden">
           <button 
-            onClick={toggleLanguage} 
-            className="font-mono text-xs font-bold text-zinc-400 transition-colors hover:text-white"
+            onClick={toggleLanguage}
+            className="flex items-center gap-1 font-mono text-xs font-medium text-zinc-400 transition-colors hover:text-emerald-400"
           >
+            <Globe className="h-4 w-4" />
             {i18n.language.toUpperCase()}
           </button>
           <Link to="/cart" className="relative text-zinc-400 transition-colors hover:text-white">
@@ -85,14 +87,14 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(false)}
               className="font-mono text-sm font-medium text-zinc-400 hover:text-emerald-400"
             >
-              {t('[ STORE ]')}
+              {t('nav.store')}
             </Link>
             <Link
               to="/blog"
               onClick={() => setIsMenuOpen(false)}
               className="font-mono text-sm font-medium text-zinc-400 hover:text-emerald-400"
             >
-              {t('[ INTEL ]')}
+              {t('nav.intel')}
             </Link>
           </div>
         </div>

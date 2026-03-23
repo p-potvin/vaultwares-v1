@@ -1,7 +1,7 @@
 {
-  "name": "react-example",
+  "name": "vaultwares-website",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.3.1",
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
@@ -46,5 +46,24 @@
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
-  }
+  },
+  "description": "VaultWares website",
+  "main": "index*.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/p-potvin/vaultwares-v1.git"
+  },
+  "keywords": [
+    "vaultwares",
+    "website",
+    "nodejs",
+    "server",
+    "typescript"
+  ],
+  "author": "VaultWares",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/p-potvin/vaultwares-v1/issues"
+  },
+  "homepage": "https://github.com/p-potvin/vaultwares-v1#readme"
 }

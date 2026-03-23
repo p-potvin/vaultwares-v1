@@ -111,7 +111,7 @@ export default function Cart() {
             <div className="lg:col-span-1">
               <div className="sticky top-24 rounded-2xl border border-white/10 bg-zinc-900/50 p-6">
                 <h2 className="mb-6 font-mono text-xl font-bold text-white">{t('cart.summary')}</h2>
-                
+
                 <div className="mb-6 space-y-4 border-b border-white/10 pb-6">
                   <div className="flex justify-between text-zinc-400">
                     <span>{t('cart.subtotal')}</span>
@@ -134,10 +134,10 @@ export default function Cart() {
                 >
                   {t('cart.checkout')} <ArrowRight className="h-4 w-4" />
                 </button>
-                
+
                 <div className="mt-6 flex items-center justify-center gap-2 text-xs text-zinc-500">
                   <ShieldCheck className="h-4 w-4" />
-                  <span>Paiement sécurisé chiffré en 256 bits</span>
+                  <span>{t('cart.secure_payment')}</span>
                 </div>
               </div>
             </div>

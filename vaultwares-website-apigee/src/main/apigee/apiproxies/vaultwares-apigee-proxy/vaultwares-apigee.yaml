@@ -1,0 +1,95 @@
+openapi: 3.0.3
+info:
+  title: My API
+  description: My API description
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          description: Name of the product
+          example: "VaultGuard VPN"
+        description:
+          type: string
+          description: Detailed description of the product
+          example: "Secure your online presence with our military-grade VPN service."
+        price:
+          type: number
+          format: float
+          description: Price of the product
+          example: 9.99
+        currency:
+          type: string
+          description: Currency of the product price
+          example: "USD"
+        category:
+          type: string
+          description: Category of the product
+          example: "VPN Services"
+        imageUrl:
+          type: string
+          format: uri
+          description: URL to the product image
+          example: "https://example.com/images/vaultguard-vpn.png"
+        stock:
+          type: integer
+          description: Available stock quantity
+          example: 100
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "user@example.com"
+        firstName:
+          type: string
+          description: User's first name
+          example: "John"
+        lastName:
+          type: string
+          description: User's last name
+          example: "Doe"
+        address:
+          type: object
+          properties:
+            street:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            zip:
+              type: string
+            country:
+              type: string
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          openapi: 3.0.3
+          

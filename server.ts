@@ -1,39 +1,78 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import { createServer as createViteServer } from 'vite';
 import pg from 'pg';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { v4 as uuidv4 } from 'uuid';
 import { MOCK_PRODUCTS, MOCK_ORDERS } from './src/store/mockData.ts';
+import { createOrderSchema } from './src/lib/schemas.ts';
+
+// Extend Express Request type to include user
+declare global {
+  namespace Express {
+    interface Request {
+      user?: UserJwtPayload;
+    }
+  }
+}
+
+interface UserJwtPayload extends JwtPayload {
+  id: string;
+  email: string;
+}
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
-const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-vaultwares-key';
+let JWT_SECRET = process.env.JWT_SECRET;
+
+// Security: Fail fast if JWT_SECRET is not set in production
+if (!JWT_SECRET) {
+  if (process.env.NODE_ENV === 'production') {
+    console.error('[FATAL] JWT_SECRET environment variable is required in production');
+    process.exit(1);
+  }
+  // In development, use a default insecure secret to simplify setup
+  JWT_SECRET = 'insecure_default_secret_for_dev_only';
+  console.warn('[WARNING] Using insecure default JWT_SECRET. Set JWT_SECRET env var for production.');
+}
 
 app.use(cors());
 app.use(express.json());
 
-// Database connection
-const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Database connection configuration
+const dbConfig = {
+  user: process.env.DB_USER, // e.g., 'postgres'
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME, // e.g., 'vaultwares-database'
+  // Use a Unix socket in production (on Cloud Run) for security and performance
+  host: isProduction
+    ? `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}` // e.g., '/cloudsql/vaultwares:us-central1:vaultwares-database'
+    : process.env.DB_HOST, // e.g., '127.0.0.1' for local proxy
+  port: isProduction ? undefined : Number(process.env.DB_PORT || 5432),
+};
+
+const pool = new pg.Pool(dbConfig);
 
 // Helper to check DB connection
-const isDbConnected = () => !!process.env.DATABASE_URL;
+const isDbConnected = () =>
+  !!(process.env.DB_USER && process.env.DB_PASSWORD && process.env.DB_NAME);
 
 // Authentication Middleware
-const authenticateToken = (req: any, res: any, next: any) => {
+const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) return res.status(401).json({ error: 'Access denied' });
 
-  jwt.verify(token, JWT_SECRET, (err: any, user: any) => {
+  jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) return res.status(403).json({ error: 'Invalid token' });
-    req.user = user;
+    req.user = user as JwtPayload;
     next();
   });
 };
@@ -46,10 +85,10 @@ app.get('/api/health', (req, res) => {
 // Auth Routes
 app.post('/api/auth/register', async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
-  
+
   if (!isDbConnected()) {
     // Mock registration
-    const user = { id: 'u-' + Date.now(), email, first_name: firstName, last_name: lastName };
+    const user = { id: uuidv4(), email, first_name: firstName, last_name: lastName };
     const token = jwt.sign(user, JWT_SECRET, { expiresIn: '24h' });
     return res.json({ token, user });
   }
@@ -58,7 +97,7 @@ app.post('/api/auth/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const result = await pool.query(
       'INSERT INTO users (id, email, password_hash, first_name, last_name) VALUES ($1, $2, $3, $4, $5) RETURNING id, email, first_name, last_name',
-      [`u-${Date.now()}`, email, hashedPassword, firstName, lastName]
+      [uuidv4(), email, hashedPassword, firstName, lastName]
     );
     const user = result.rows[0];
     const token = jwt.sign(user, JWT_SECRET, { expiresIn: '24h' });
@@ -76,7 +115,7 @@ app.post('/api/auth/login', async (req, res) => {
 
   if (!isDbConnected()) {
     // Mock login
-    const user = { id: 'u-12345', email, first_name: 'Admin', last_name: 'User' };
+    const user = { id: 'u-12345', email, first_name: 'Admin', last_name: 'User' }; // Keep mock ID stable for consistency
     const token = jwt.sign(user, JWT_SECRET, { expiresIn: '24h' });
     return res.json({ token, user });
   }
@@ -126,7 +165,7 @@ app.get('/api/products/:id', async (req, res) => {
 });
 
 // Order Routes
-app.get('/api/orders', authenticateToken, async (req: any, res) => {
+app.get('/api/orders', authenticateToken, async (req, res) => {
   if (!isDbConnected()) {
     return res.json(MOCK_ORDERS);
   }
@@ -149,52 +188,92 @@ app.get('/api/orders', authenticateToken, async (req: any, res) => {
       WHERE o.user_id = $1
       GROUP BY o.id
       ORDER BY o.created_at DESC
-    `, [req.user.id]);
+    `, [(req.user as JwtPayload).id]);
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch orders' });
   }
 });
 
-app.post('/api/orders', authenticateToken, async (req: any, res) => {
+app.post('/api/orders', authenticateToken, async (req, res) => {
   if (!isDbConnected()) {
-    return res.json({ success: true, orderId: 'mock-order-' + Date.now() });
+    return res.json({ success: true, orderId: `mock-order-${uuidv4()}` });
   }
+
+  // 1. Validate incoming data with Zod
+  const validation = createOrderSchema.safeParse(req.body);
+  if (!validation.success) {
+    return res.status(400).json({ error: 'Invalid order data', details: validation.error.errors });
+  }
+
+  const { items } = validation.data;
+  const client = await pool.connect();
+
   try {
-    const { items, total_amount } = req.body;
-    const client = await pool.connect();
-    try {
-      await client.query('BEGIN');
-      const orderRes = await client.query(
-        'INSERT INTO orders (id, user_id, total_amount, status) VALUES ($1, $2, $3, $4) RETURNING id',
-        [`ord-${Date.now()}`, req.user.id, total_amount, 'pending']
+    await client.query('BEGIN');
+
+    let calculatedTotal = 0;
+    const orderItemsData = [];
+
+    // 2. Verify each item, lock rows, check inventory, and calculate total on the server
+    for (const item of items) {
+      const productRes = await client.query(
+        'SELECT price, inventory_count, name FROM products WHERE id = $1 AND is_active = true FOR UPDATE',
+        [item.product.id]
       );
-      const orderId = orderRes.rows[0].id;
-      
-      for (const item of items) {
-        await client.query(
-          'INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase) VALUES ($1, $2, $3, $4)',
-          [orderId, item.product.id, item.quantity, item.product.price]
-        );
+
+      if (productRes.rows.length === 0) {
+        throw new Error(`Product with ID ${item.product.id} not found or is inactive.`);
       }
-      await client.query('COMMIT');
-      res.json({ success: true, orderId });
-    } catch (e) {
-      await client.query('ROLLBACK');
-      throw e;
-    } finally {
-      client.release();
+
+      const product = productRes.rows[0];
+
+      if (product.inventory_count < item.quantity) {
+        throw new Error(`Insufficient stock for ${product.name}. Requested: ${item.quantity}, Available: ${product.inventory_count}`);
+      }
+
+      calculatedTotal += product.price * item.quantity;
+      orderItemsData.push({ ...item, price_at_purchase: product.price });
+
+      // 3. Decrement inventory
+      await client.query(
+        'UPDATE products SET inventory_count = inventory_count - $1 WHERE id = $2',
+        [item.quantity, item.product.id]
+      );
     }
-  } catch (err) {
-    console.error('Order Error:', err);
-    res.status(500).json({ error: 'Failed to create order' });
+
+    // 4. Create the order with the server-calculated total
+    const orderRes = await client.query(
+      'INSERT INTO orders (id, user_id, total_amount, status) VALUES ($1, $2, $3, $4) RETURNING id',
+      [uuidv4(), (req.user as UserJwtPayload).id, calculatedTotal, 'paid']
+    );
+    const orderId = orderRes.rows[0].id;
+
+    // 5. Insert order items with the verified price
+    for (const orderItem of orderItemsData) {
+      await client.query(
+        'INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase) VALUES ($1, $2, $3, $4)',
+        [orderId, orderItem.product.id, orderItem.quantity, orderItem.price_at_purchase]
+      );
+    }
+
+    await client.query('COMMIT');
+    res.status(201).json({ success: true, orderId });
+
+  } catch (err: any) {
+    await client.query('ROLLBACK');
+    console.error('Order Error:', err.message);
+    // Provide a more specific error message to the client
+    res.status(400).json({ error: err.message || 'Failed to create order' });
+  } finally {
+    client.release();
   }
 });
 
 // Tracking Route (Mock Delivery API)
 app.get('/api/track/:number', (req, res) => {
   const { number } = req.params;
-  
+
   // Simulate a realistic tracking response
   const trackingData = {
     trackingNumber: number,
@@ -247,8 +326,8 @@ async function startServer() {
     app.use(express.static('dist'));
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
   });
 }
 

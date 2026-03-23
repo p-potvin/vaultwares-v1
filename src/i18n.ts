@@ -71,6 +71,7 @@ const resources = {
         shipping_calc: 'Calculated at checkout',
         total: 'Total',
         checkout: 'PROCEED TO CHECKOUT',
+        secure_payment: 'Encrypted 256-bit secure payment',
       },
       checkout: {
         success: 'PAYMENT SUCCESSFUL',
@@ -163,6 +164,8 @@ Coupled with **Multi-Factor Authentication (MFA)**—preferably using an authent
 
 Furthermore, keeping your software updated is crucial. Those annoying update prompts are rarely just feature additions; they are often critical patches for newly discovered vulnerabilities. Ignoring them leaves known holes open for attackers to exploit. Cybersecurity isn't about achieving perfect invulnerability; it's about making yourself a difficult target. By implementing these baseline practices, you drastically reduce your risk profile.
           `,
+          date: '2026-03-01',
+          author: 'VaultWares Threat Intel',
           category: 'Guides'
         },
         'portable-routers': {
@@ -179,6 +182,8 @@ The real power of a portable router lies in its advanced features. Most modern t
 
 Additionally, they provide a hardware firewall, isolating your devices from other users on the public network. For anyone who travels, a portable router isn't a luxury; it's a critical piece of security infrastructure.
           `,
+          date: '2026-02-25',
+          author: 'Network Security Team',
           category: 'Hardware'
         },
         'wireguard-revolution': {
@@ -197,6 +202,8 @@ First, it makes the code vastly easier to audit for security vulnerabilities. A 
 
 Perhaps most importantly for modern users, WireGuard handles network transitions seamlessly. If you switch from Wi-Fi to cellular data on your phone, an OpenVPN connection will often drop and take several seconds to renegotiate. WireGuard handles this transition instantly, maintaining the secure tunnel without interruption. It is the modern standard for a reason.
           `,
+          date: '2026-02-20',
+          author: 'VaultWares Engineering',
           category: 'Software'
         },
         'openwrt-freedom': {
@@ -213,6 +220,8 @@ The benefits are transformative. OpenWrt gives you granular control over your ne
 
 More importantly, because it is open-source, the code is constantly scrutinized by a global community of security researchers. Vulnerabilities are patched quickly, long after the original manufacturer has stopped supporting the hardware. OpenWrt turns a disposable consumer electronic into a powerful, secure, and long-lasting network appliance.
           `,
+          date: '2026-02-15',
+          author: 'Network Security Team',
           category: 'Hardware'
         },
         'js-fingerprinting': {
@@ -229,6 +238,8 @@ Individually, none of these data points are unique. But when combined, they crea
 
 This means that even if you use a VPN to hide your IP address, use incognito mode, and block all cookies, a website can still identify you with a high degree of accuracy the moment you load their page. Combating fingerprinting requires specialized browsers (like Tor or hardened Firefox) that intentionally spoof or normalize these metrics to make you blend in with the crowd.
           `,
+          date: '2026-02-10',
+          author: 'Privacy Research Group',
           category: 'Privacy'
         },
         'scale-of-data-collection': {
@@ -245,6 +256,8 @@ This data is not kept in silos. It is aggregated, analyzed, and sold by data bro
 
 This is not a conspiracy theory; it is the publicly stated business model of the modern internet. The infrastructure of the digital economy relies on the extraction of behavioral surplus. Recognizing the industrial scale of this operation is essential. Only by understanding the magnitude of the collection can we begin to take meaningful steps to limit our exposure.
           `,
+          date: '2026-02-05',
+          author: 'VaultWares Threat Intel',
           category: 'Privacy'
         },
         'corporate-control': {
@@ -261,6 +274,8 @@ This isn't about shadowy cabals; it's about the natural economic outcome of netw
 
 Reclaiming our digital autonomy requires a conscious effort to decentralize our digital lives. It means seeking out independent services, utilizing open protocols, and supporting platforms that prioritize user sovereignty over shareholder value. It requires effort, but the alternative is a digital landscape where we are tenants, not owners.
           `,
+          date: '2026-01-30',
+          author: 'Privacy Research Group',
           category: 'Opinion'
         },
         'importance-of-foss': {
@@ -277,6 +292,8 @@ The importance of FOSS extends far beyond cost. It is about transparency and sec
 
 Most importantly, FOSS is about human freedom. In a world increasingly mediated by algorithms, the ability to understand and control those algorithms is a prerequisite for autonomy. Supporting FOSS—whether by using it, contributing to it, or funding it—is not just a technical choice; it is a commitment to a transparent and equitable digital future.
           `,
+          date: '2026-01-25',
+          author: 'VaultWares Engineering',
           category: 'Philosophy'
         },
         'never-too-late': {
@@ -293,6 +310,8 @@ Think of your digital footprint like financial debt. Yes, you may have accumulat
 
 Data also has a half-life. The information brokers hold about your habits from five years ago is significantly less valuable than the real-time data you are generating right now. By changing your habits today, you begin to starve the algorithms of the fresh data they need to maintain accurate profiles. It is never too late to start taking your privacy seriously.
           `,
+          date: '2026-01-20',
+          author: 'VaultWares Threat Intel',
           category: 'Guides'
         },
         'childrens-privacy': {
@@ -309,6 +328,8 @@ We have a profound moral obligation to act as stewards of our children's privacy
 
 We must equip the next generation with the tools and the mindset to navigate a world that constantly seeks to extract their data. Their future autonomy depends on the boundaries we help them establish today.
           `,
+          date: '2026-01-15',
+          author: 'Privacy Research Group',
           category: 'Opinion'
         }
       }
@@ -383,6 +404,7 @@ We must equip the next generation with the tools and the mindset to navigate a w
         shipping_calc: 'Calculé à la caisse',
         total: 'Total',
         checkout: 'PROCÉDER AU PAIEMENT',
+        secure_payment: 'Paiement sécurisé chiffré en 256 bits',
       },
       checkout: {
         success: 'PAIEMENT RÉUSSI',
@@ -475,6 +497,8 @@ Couplé à l'**authentification multifacteur (MFA)**, de préférence à l'aide 
 
 De plus, il est crucial de maintenir vos logiciels à jour. Ces invites de mise à jour ennuyeuses sont rarement de simples ajouts de fonctionnalités ; ce sont souvent des correctifs critiques pour des vulnérabilités nouvellement découvertes. En les ignorant, vous laissez des failles connues ouvertes pour que les attaquants puissent les exploiter. La cybersécurité ne consiste pas à atteindre une invulnérabilité parfaite ; il s'agit de vous rendre une cible difficile. En mettant en œuvre ces pratiques de base, vous réduisez considérablement votre profil de risque.
           `,
+          date: '2026-03-01',
+          author: 'VaultWares Threat Intel',
           category: 'Guides'
         },
         'portable-routers': {
@@ -491,6 +515,8 @@ La véritable puissance d'un routeur portable réside dans ses fonctionnalités 
 
 De plus, ils fournissent un pare-feu matériel, isolant vos appareils des autres utilisateurs sur le réseau public. Pour quiconque voyage, un routeur portable n'est pas un luxe ; c'est un élément critique de l'infrastructure de sécurité.
           `,
+          date: '2026-02-25',
+          author: 'Network Security Team',
           category: 'Matériel'
         },
         'wireguard-revolution': {
@@ -509,6 +535,8 @@ Premièrement, cela rend le code beaucoup plus facile à auditer pour les vulné
 
 Peut-être plus important encore pour les utilisateurs modernes, WireGuard gère les transitions de réseau de manière transparente. Si vous passez du Wi-Fi aux données cellulaires sur votre téléphone, une connexion OpenVPN s'interrompra souvent et mettra plusieurs secondes à se renégocier. WireGuard gère cette transition instantanément, en maintenant le tunnel sécurisé sans interruption. C'est la norme moderne pour une raison.
           `,
+          date: '2026-02-20',
+          author: 'VaultWares Engineering',
           category: 'Logiciel'
         },
         'openwrt-freedom': {
@@ -525,6 +553,8 @@ Les avantages sont transformateurs. OpenWrt vous donne un contrôle granulaire s
 
 Plus important encore, parce qu'il est open source, le code est constamment scruté par une communauté mondiale de chercheurs en sécurité. Les vulnérabilités sont corrigées rapidement, longtemps après que le fabricant d'origine a cessé de prendre en charge le matériel. OpenWrt transforme un appareil électronique grand public jetable en un appareil réseau puissant, sécurisé et durable.
           `,
+          date: '2026-02-15',
+          author: 'Network Security Team',
           category: 'Matériel'
         },
         'js-fingerprinting': {
@@ -541,6 +571,8 @@ Individuellement, aucun de ces points de données n'est unique. Mais lorsqu'ils 
 
 Cela signifie que même si vous utilisez un VPN pour masquer votre adresse IP, utilisez le mode de navigation privée et bloquez tous les cookies, un site Web peut toujours vous identifier avec un degré élevé de précision au moment où vous chargez sa page. La lutte contre la prise d'empreintes digitales nécessite des navigateurs spécialisés (comme Tor ou Firefox renforcé) qui usurpent ou normalisent intentionnellement ces mesures pour vous faire fondre dans la masse.
           `,
+          date: '2026-02-10',
+          author: 'Privacy Research Group',
           category: 'Confidentialité'
         },
         'scale-of-data-collection': {
@@ -557,6 +589,8 @@ Ces données ne sont pas conservées en silos. Elles sont agrégées, analysées
 
 Ce n'est pas une théorie du complot ; c'est le modèle commercial publiquement déclaré de l'Internet moderne. L'infrastructure de l'économie numérique repose sur l'extraction du surplus comportemental. Reconnaître l'échelle industrielle de cette opération est essentiel. Ce n'est qu'en comprenant l'ampleur de la collecte que nous pouvons commencer à prendre des mesures significatives pour limiter notre exposition.
           `,
+          date: '2026-02-05',
+          author: 'VaultWares Threat Intel',
           category: 'Confidentialité'
         },
         'corporate-control': {
@@ -573,6 +607,8 @@ Il ne s'agit pas de cabales obscures ; il s'agit du résultat économique nature
 
 Récupérer notre autonomie numérique nécessite un effort conscient pour décentraliser nos vies numériques. Cela signifie rechercher des services indépendants, utiliser des protocoles ouverts et soutenir des plateformes qui donnent la priorité à la souveraineté des utilisateurs par rapport à la valeur actionnariale. Cela demande des efforts, mais l'alternative est un paysage numérique où nous sommes des locataires, et non des propriétaires.
           `,
+          date: '2026-01-30',
+          author: 'Privacy Research Group',
           category: 'Opinion'
         },
         'importance-of-foss': {
@@ -589,6 +625,8 @@ L'importance des FOSS va bien au-delà du coût. Il s'agit de transparence et de
 
 Plus important encore, les FOSS concernent la liberté humaine. Dans un monde de plus en plus médiatisé par des algorithmes, la capacité de comprendre et de contrôler ces algorithmes est une condition préalable à l'autonomie. Soutenir les FOSS, que ce soit en les utilisant, en y contribuant ou en les finançant, n'est pas seulement un choix technique ; c'est un engagement envers un avenir numérique transparent et équitable.
           `,
+          date: '2026-01-25',
+          author: 'VaultWares Engineering',
           category: 'Philosophie'
         },
         'never-too-late': {
@@ -605,6 +643,8 @@ Considérez votre empreinte numérique comme une dette financière. Oui, vous en
 
 Les données ont également une demi-vie. Les informations que les courtiers détiennent sur vos habitudes d'il y a cinq ans ont beaucoup moins de valeur que les données en temps réel que vous générez actuellement. En changeant vos habitudes aujourd'hui, vous commencez à priver les algorithmes des données fraîches dont ils ont besoin pour maintenir des profils précis. Il n'est jamais trop tard pour commencer à prendre votre vie privée au sérieux.
           `,
+          date: '2026-01-20',
+          author: 'VaultWares Threat Intel',
           category: 'Guides'
         },
         'childrens-privacy': {
@@ -621,6 +661,8 @@ Nous avons une profonde obligation morale d'agir en tant que gardiens de la vie 
 
 Nous devons équiper la prochaine génération des outils et de l'état d'esprit nécessaires pour naviguer dans un monde qui cherche constamment à extraire leurs données. Leur autonomie future dépend des limites que nous les aidons à établir aujourd'hui.
           `,
+          date: '2026-01-15',
+          author: 'Privacy Research Group',
           category: 'Opinion'
         }
       }

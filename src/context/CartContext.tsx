@@ -20,8 +20,20 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>(() => {
-    const saved = localStorage.getItem('vw_session');
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem('vw_session');
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      // Validate parsed data is an array
+      if (!Array.isArray(parsed)) {
+        console.warn('[CartContext] Invalid localStorage data, resetting cart');
+        return [];
+      }
+      return parsed;
+    } catch (err) {
+      console.error('[CartContext] Failed to parse localStorage:', err);
+      return [];
+    }
   });
 
   useEffect(() => {

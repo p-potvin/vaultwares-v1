@@ -3,6 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Single-page app routing for GitHub Pages: restore path encoded by 404.html -->
+    <script>
+      (function(l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function(s) {
+            return s.replace(/~and~/g, '&');
+          });
+          window.history.replaceState(
+            null, null,
+            l.pathname.replace(/\/$/, '') + decoded[0] +
+            (decoded[1] ? '?' + decoded[1] : '') +
+            l.hash
+          );
+        }
+      }(window.location));
+    </script>
     <title>VaultWares | Enterprise-Grade Privacy Hardware & Software</title>
     <meta name="description" content="VaultWares provides enterprise-grade privacy hardware, GrapheneOS devices, QubesOS laptops, and zero-telemetry network sentries to protect your digital autonomy." />
     <meta name="keywords" content="Privacy hardware, GrapheneOS, QubesOS, Intrusion Detection System, WireGuard VPN router, untraceable eSIM, open source hardware, digital privacy, VaultWares" />

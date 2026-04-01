@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>VaultWares</title>
+    <script>
+      // Single-page app redirect for GitHub Pages.
+      // Encodes the current path into the query string so the main index.html
+      // can restore it after loading.
+      // segmentCount = 1 for GitHub Pages project sites (path prefix is /repo-name).
+      // Change to 0 for user/org pages (deployed at the root domain).
+      var segmentCount = 1;
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>

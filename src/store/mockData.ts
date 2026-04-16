@@ -1,7 +1,9 @@
 export type Product = {
   id: string;
   name: string;
+  name_fr?: string;
   description: string;
+  description_fr?: string;
   sku: string;
   price: number;
   inventory_count: number;

@@ -25,7 +25,7 @@ interface UserJwtPayload extends JwtPayload {
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
 let JWT_SECRET = process.env.JWT_SECRET;
 
@@ -46,22 +46,29 @@ app.use(express.json());
 const isProduction = process.env.NODE_ENV === 'production';
 
 // Database connection configuration
-const dbConfig = {
-  user: process.env.DB_USER, // e.g., 'postgres'
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME, // e.g., 'vaultwares-database'
-  // Use a Unix socket in production (on Cloud Run) for security and performance
-  host: isProduction
-    ? `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}` // e.g., '/cloudsql/vaultwares:us-central1:vaultwares-database'
-    : process.env.DB_HOST, // e.g., '127.0.0.1' for local proxy
-  port: isProduction ? undefined : Number(process.env.DB_PORT || 5432),
-};
-
-const pool = new pg.Pool(dbConfig);
+// Support DATABASE_URL (Vercel Postgres / standard connection string) or individual vars
+let pool: pg.Pool;
+if (process.env.DATABASE_URL) {
+  pool = new pg.Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: isProduction ? { rejectUnauthorized: false } : undefined,
+  });
+} else {
+  const dbConfig = {
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: isProduction
+      ? `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}`
+      : process.env.DB_HOST,
+    port: isProduction ? undefined : Number(process.env.DB_PORT || 5432),
+  };
+  pool = new pg.Pool(dbConfig);
+}
 
 // Helper to check DB connection
 const isDbConnected = () =>
-  !!(process.env.DB_USER && process.env.DB_PASSWORD && process.env.DB_NAME);
+  !!(process.env.DATABASE_URL || (process.env.DB_USER && process.env.DB_PASSWORD && process.env.DB_NAME));
 
 // Authentication Middleware
 const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
@@ -72,7 +79,7 @@ const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) return res.status(403).json({ error: 'Invalid token' });
-    req.user = user as JwtPayload;
+    req.user = user as UserJwtPayload;
     next();
   });
 };
@@ -142,7 +149,9 @@ app.get('/api/products', async (req, res) => {
     return res.json(MOCK_PRODUCTS);
   }
   try {
-    const result = await pool.query('SELECT * FROM products WHERE is_active = true');
+    const result = await pool.query(
+      'SELECT id, name, name_fr, description, description_fr, sku, price, inventory_count, image_url, is_active, category FROM products WHERE is_active = true'
+    );
     res.json(result.rows);
   } catch (err) {
     console.error('DB Error:', err);
@@ -156,7 +165,10 @@ app.get('/api/products/:id', async (req, res) => {
     return product ? res.json(product) : res.status(404).json({ error: 'Not found' });
   }
   try {
-    const result = await pool.query('SELECT * FROM products WHERE id = $1', [req.params.id]);
+    const result = await pool.query(
+      'SELECT id, name, name_fr, description, description_fr, sku, price, inventory_count, image_url, is_active, category FROM products WHERE id = $1',
+      [req.params.id]
+    );
     if (result.rows.length === 0) return res.status(404).json({ error: 'Not found' });
     res.json(result.rows[0]);
   } catch (err) {
@@ -179,6 +191,7 @@ app.get('/api/orders', authenticateToken, async (req, res) => {
                'product', json_build_object(
                  'id', p.id,
                  'name', p.name,
+                 'name_fr', p.name_fr,
                  'image_url', p.image_url
                )
              )) as items
@@ -203,7 +216,7 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
   // 1. Validate incoming data with Zod
   const validation = createOrderSchema.safeParse(req.body);
   if (!validation.success) {
-    return res.status(400).json({ error: 'Invalid order data', details: validation.error.errors });
+    return res.status(400).json({ error: 'Invalid order data', details: validation.error.issues });
   }
 
   const { items } = validation.data;
@@ -315,7 +328,7 @@ app.get('/api/track/:number', (req, res) => {
 });
 
 // Vite middleware for development
-async function startServer() {
+export async function startServer() {
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -324,6 +337,10 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     app.use(express.static('dist'));
+    // SPA fallback for client-side routing
+    app.get('*', (_req, res) => {
+      res.sendFile('dist/index.html', { root: '.' });
+    });
   }
 
   app.listen(PORT, () => {
@@ -331,4 +348,8 @@ async function startServer() {
   });
 }
 
-startServer();
+// Only start server when running directly (not imported by serverless handler)
+const isMain = import.meta.url === `file://${process.argv[1]}`;
+if (isMain) {
+  startServer();
+}

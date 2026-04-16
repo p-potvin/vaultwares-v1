@@ -1,13 +1,21 @@
 import { Link } from 'react-router-dom';
-import { Shield, Lock, Server, ArrowRight, EyeOff, Cpu, GlobeLock } from 'lucide-react';
-import { MOCK_PRODUCTS } from '../store/mockData';
+import { Shield, ArrowRight, EyeOff, Cpu, GlobeLock } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import type { Product } from '../store/mockData';
 import ProductCard from '../components/ProductCard';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 
 export default function Home() {
-  const featuredProducts = MOCK_PRODUCTS.slice(0, 3);
   const { t } = useTranslation();
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    fetch('/api/products')
+      .then((r) => r.json())
+      .then((data: Product[]) => setFeaturedProducts(data.slice(0, 3)))
+      .catch(() => {});
+  }, []);
 
   return (
     <motion.div

@@ -72,7 +72,7 @@ export default function Login() {
             }`}
           >
             <LogIn className="h-4 w-4" />
-            Login
+            {t('auth.login_btn')}
           </button>
           <button
             onClick={() => { setMode('register'); setError(''); }}
@@ -83,7 +83,7 @@ export default function Login() {
             }`}
           >
             <UserPlus className="h-4 w-4" />
-            Register
+            {t('auth.register_btn')}
           </button>
         </div>
 

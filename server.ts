@@ -6,6 +6,8 @@ import cors from 'cors';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
+import { pathToFileURL } from 'url';
+import rateLimit from 'express-rate-limit';
 import { MOCK_PRODUCTS, MOCK_ORDERS } from './src/store/mockData.ts';
 import { createOrderSchema } from './src/lib/schemas.ts';
 
@@ -42,6 +44,15 @@ if (!JWT_SECRET) {
 
 app.use(cors());
 app.use(express.json());
+
+// Rate limiting for auth endpoints (prevent brute-force attacks)
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' },
+});
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -90,7 +101,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Auth Routes
-app.post('/api/auth/register', async (req, res) => {
+app.post('/api/auth/register', authLimiter, async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
 
   if (!isDbConnected()) {
@@ -117,7 +128,7 @@ app.post('/api/auth/register', async (req, res) => {
   }
 });
 
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', authLimiter, async (req, res) => {
   const { email, password } = req.body;
 
   if (!isDbConnected()) {
@@ -349,7 +360,7 @@ export async function startServer() {
 }
 
 // Only start server when running directly (not imported by serverless handler)
-const isMain = import.meta.url === `file://${process.argv[1]}`;
+const isMain = import.meta.url === pathToFileURL(process.argv[1]).href;
 if (isMain) {
   startServer();
 }

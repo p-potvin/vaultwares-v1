@@ -14,7 +14,7 @@ export default function Home() {
     fetch('/api/products')
       .then((r) => r.json())
       .then((data: Product[]) => setFeaturedProducts(data.slice(0, 3)))
-      .catch(() => {});
+      .catch((err) => console.error('[Home] Failed to fetch products:', err));
   }, []);
 
   return (

@@ -4,3 +4,6 @@
 [submodule "vaultwares_agentciation"]
 	path = vaultwares_agentciation
 	url = https://github.com/p-potvin/vaultwares-agentciation
+[submodule "vaultwares-agentciation"]
+	path = vaultwares-agentciation
+	url = https://github.com/p-potvin/vaultwares-agentciation

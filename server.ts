@@ -7,9 +7,15 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import { pathToFileURL } from 'url';
+import { readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import rateLimit from 'express-rate-limit';
 import { MOCK_PRODUCTS, MOCK_ORDERS } from './src/store/mockData.ts';
 import { createOrderSchema } from './src/lib/schemas.ts';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Extend Express Request type to include user
 declare global {
@@ -23,6 +29,45 @@ declare global {
 interface UserJwtPayload extends JwtPayload {
   id: string;
   email: string;
+}
+
+type ProductLocaleEntry = { name: string; description: string };
+type ProductLocales = Record<string, ProductLocaleEntry>;
+
+// Load product locale resource files at startup (equivalent to .resx / gettext .po files)
+function loadLocale(lang: string): ProductLocales {
+  const filePath = resolve(__dirname, 'locales', `products.${lang}.json`);
+  try {
+    return JSON.parse(readFileSync(filePath, 'utf-8')) as ProductLocales;
+  } catch {
+    return {};
+  }
+}
+
+const LOCALES: Record<string, ProductLocales> = {
+  en: loadLocale('en'),
+  fr: loadLocale('fr'),
+};
+const SUPPORTED_LANGS = new Set(['en', 'fr']);
+const DEFAULT_LANG = 'en';
+
+/** Resolve the 2-letter language code from the Accept-Language header, defaulting to English. */
+function resolveLanguage(req: Request): string {
+  const header = req.headers['accept-language'] ?? '';
+  // Take the first language tag (e.g. "fr-CA,fr;q=0.9,en;q=0.8" → "fr")
+  const primary = header.split(',')[0].split('-')[0].trim().toLowerCase();
+  return SUPPORTED_LANGS.has(primary) ? primary : DEFAULT_LANG;
+}
+
+/** Apply locale overlay: replace name/description with resource-file values for the given language. */
+function localizeProduct<T extends { id: string; name: string; description: string }>(
+  product: T,
+  lang: string
+): T {
+  const locale = LOCALES[lang] ?? LOCALES[DEFAULT_LANG];
+  const entry = locale[product.id];
+  if (!entry) return product;
+  return { ...product, name: entry.name, description: entry.description };
 }
 
 dotenv.config();
@@ -156,14 +201,15 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
 
 // Product Routes
 app.get('/api/products', async (req, res) => {
+  const lang = resolveLanguage(req);
   if (!isDbConnected()) {
-    return res.json(MOCK_PRODUCTS);
+    return res.json(MOCK_PRODUCTS.map(p => localizeProduct(p, lang)));
   }
   try {
     const result = await pool.query(
-      'SELECT id, name, name_fr, description, description_fr, sku, price, inventory_count, image_url, is_active, category FROM products WHERE is_active = true'
+      'SELECT id, name, description, sku, price, inventory_count, image_url, is_active, category FROM products WHERE is_active = true'
     );
-    res.json(result.rows);
+    res.json(result.rows.map((p) => localizeProduct(p, lang)));
   } catch (err) {
     console.error('DB Error:', err);
     res.status(500).json({ error: 'Failed to fetch products' });
@@ -171,17 +217,20 @@ app.get('/api/products', async (req, res) => {
 });
 
 app.get('/api/products/:id', async (req, res) => {
+  const lang = resolveLanguage(req);
   if (!isDbConnected()) {
     const product = MOCK_PRODUCTS.find(p => p.id === req.params.id);
-    return product ? res.json(product) : res.status(404).json({ error: 'Not found' });
+    return product
+      ? res.json(localizeProduct(product, lang))
+      : res.status(404).json({ error: 'Not found' });
   }
   try {
     const result = await pool.query(
-      'SELECT id, name, name_fr, description, description_fr, sku, price, inventory_count, image_url, is_active, category FROM products WHERE id = $1',
+      'SELECT id, name, description, sku, price, inventory_count, image_url, is_active, category FROM products WHERE id = $1',
       [req.params.id]
     );
     if (result.rows.length === 0) return res.status(404).json({ error: 'Not found' });
-    res.json(result.rows[0]);
+    res.json(localizeProduct(result.rows[0], lang));
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch product' });
   }
@@ -189,8 +238,15 @@ app.get('/api/products/:id', async (req, res) => {
 
 // Order Routes
 app.get('/api/orders', authenticateToken, async (req, res) => {
+  const lang = resolveLanguage(req);
   if (!isDbConnected()) {
-    return res.json(MOCK_ORDERS);
+    return res.json(MOCK_ORDERS.map(order => ({
+      ...order,
+      items: order.items.map(item => ({
+        ...item,
+        product: localizeProduct(item.product, lang),
+      })),
+    })));
   }
   try {
     const result = await pool.query(`
@@ -202,7 +258,7 @@ app.get('/api/orders', authenticateToken, async (req, res) => {
                'product', json_build_object(
                  'id', p.id,
                  'name', p.name,
-                 'name_fr', p.name_fr,
+                 'description', p.description,
                  'image_url', p.image_url
                )
              )) as items
@@ -213,7 +269,18 @@ app.get('/api/orders', authenticateToken, async (req, res) => {
       GROUP BY o.id
       ORDER BY o.created_at DESC
     `, [(req.user as JwtPayload).id]);
-    res.json(result.rows);
+
+    // Apply locale overlay to each order's product items
+    const rows = result.rows.map(order => ({
+      ...order,
+      items: order.items
+        ? order.items.map((item: { product_id: string; quantity: number; price_at_purchase: number; product: { id: string; name: string; description: string; image_url: string } }) => ({
+            ...item,
+            product: localizeProduct(item.product, lang),
+          }))
+        : [],
+    }));
+    res.json(rows);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch orders' });
   }

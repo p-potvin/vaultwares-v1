@@ -1,15 +1,13 @@
 export type Product = {
   id: string;
   name: string;
-  name_fr?: string;
   description: string;
-  description_fr?: string;
   sku: string;
   price: number;
   inventory_count: number;
   image_url: string;
   is_active: boolean;
-  category: 'hardware' | 'software'; // Added for frontend filtering
+  category: 'hardware' | 'software';
 };
 
 export const MOCK_PRODUCTS: Product[] = [
@@ -37,7 +35,7 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: 'p-nomad-router',
-    name: 'Routeur Mobile Sécurisé Nomad',
+    name: 'Nomad Secure Mobile Router',
     description: 'Complete anonymity wherever you go. A portable Wi-Fi router featuring full-traffic encryption and a pre-configured, untraceable eSIM not tied to your identity. Create a private, secure network bubble in any hotel, cafe, or airport.',
     sku: 'NOMAD-MR-01',
     price: 349.99,
@@ -59,7 +57,7 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: 'p-libre-book',
-    name: 'Ordinateur Portable Sécurisé LibreBook (QubesOS)',
+    name: 'LibreBook Secure Laptop (QubesOS)',
     description: 'Security by compartmentalization. A laptop built entirely from open-source hardware components, running QubesOS out of the box. Isolate your work, personal, and secure environments in hardware-enforced virtual machines.',
     sku: 'LIBRE-QB-01',
     price: 1499.99,
@@ -70,7 +68,7 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: 'p-filter-list',
-    name: 'Liste de Filtres Ultime VaultWares',
+    name: 'VaultWares Ultimate Filter List',
     description: 'A meticulously curated filter list for uBlock Origin and AdGuard. Over a year in the making, this list provides maximum security against trackers and malicious domains while manually patching breakages on popular websites for maximum usability. Delivered as a secure, auto-updating subscription link.',
     sku: 'VW-FILTER-01',
     price: 19.99,

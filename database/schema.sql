@@ -12,9 +12,7 @@ CREATE TABLE users (
 CREATE TABLE products (
     id VARCHAR(50) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    name_fr VARCHAR(255),
     description TEXT,
-    description_fr TEXT,
     sku VARCHAR(100) UNIQUE NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     inventory_count INTEGER NOT NULL DEFAULT 0,
@@ -44,43 +42,16 @@ CREATE TABLE order_items (
 INSERT INTO users (id, email, password_hash, first_name, last_name) VALUES
 ('u-12345', 'admin@vaultwares.com', '$2a$10$Yc1g.pXmJg5.o3o9.zI8UuBvV.wXyZ.1a2b3c4d5e6f7g8h9i0j', 'Admin', 'User');
 
-INSERT INTO products (id, name, name_fr, description, description_fr, sku, price, inventory_count, image_url, is_active, category) VALUES 
-('p-sentry-ids',
-  'Aegis Network Sentry (IDS)',
-  'Aegis Network Sentry (IDS)',
-  'A plug-and-play gateway Intrusion Detection System (IDS) that analyzes network packets in real-time. Powered by a high-performance quad-core CPU, 8GB RAM, and a 128GB NVMe SSD, it handles gigabit speeds (1 Gbps) effortlessly. Detects malicious patterns and alerts you instantly via email. Perfect for small businesses and privacy-conscious homes. Zero telemetry, absolutely no tracking. Optional secure remote support available.',
-  'Un système de détection d''intrusion (IDS) passerelle prêt à l''emploi qui analyse les paquets réseau en temps réel. Propulsé par un processeur quad-core haute performance, 8 Go de RAM et un SSD NVMe de 128 Go, il gère les vitesses gigabit (1 Gbps) sans effort. Détecte les modèles malveillants et vous alerte instantanément par e-mail. Parfait pour les petites entreprises et les foyers soucieux de la confidentialité. Zéro télémétrie, absolument aucun suivi. Support à distance sécurisé en option disponible.',
-  'AEGIS-IDS-01', 299.99, 50, 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800', true, 'hardware'),
-('p-privacy-hub',
-  'Aegis Privacy Hub',
-  'Aegis Privacy Hub',
-  'Take back control of your network. This plug-and-play gateway features a network-wide AdGuard adblocker, a built-in WireGuard VPN client, and military-grade DNS encryption. Stop your ISP from snooping on your traffic and block trackers before they reach your devices. Can be used standalone or integrated seamlessly with the Aegis Network Sentry.',
-  'Reprenez le contrôle de votre réseau. Cette passerelle prête à l''emploi comprend un bloqueur de publicités AdGuard à l''échelle du réseau, un client VPN WireGuard intégré et un cryptage DNS de niveau militaire. Empêchez votre FAI d''espionner votre trafic et bloquez les traqueurs avant qu''ils n''atteignent vos appareils. Peut être utilisé seul ou intégré de manière transparente avec l''Aegis Network Sentry.',
-  'AEGIS-PRV-01', 249.99, 75, 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=800', true, 'hardware'),
-('p-nomad-router',
-  'Nomad Secure Mobile Router',
-  'Routeur Mobile Sécurisé Nomad',
-  'Complete anonymity wherever you go. A portable Wi-Fi router featuring full-traffic encryption and a pre-configured, untraceable eSIM not tied to your identity. Create a private, secure network bubble in any hotel, cafe, or airport.',
-  'L''anonymat complet où que vous alliez. Un routeur Wi-Fi portable doté d''un chiffrement de tout le trafic et d''une eSIM préconfigurée, introuvable et non liée à votre identité. Créez une bulle de réseau privée et sécurisée dans n''importe quel hôtel, café ou aéroport.',
-  'NOMAD-MR-01', 349.99, 30, 'https://images.unsplash.com/photo-1606229365485-93a3b8ee0385?auto=format&fit=crop&q=80&w=800', true, 'hardware'),
-('p-phantom-pixel',
-  'Phantom Pixel 8 (GrapheneOS)',
-  'Phantom Pixel 8 (GrapheneOS)',
-  'A premium refurbished Google Pixel 8, professionally flashed with GrapheneOS. Stripped of all Google Play Services and tracking telemetry. Experience the pinnacle of mobile privacy without sacrificing modern smartphone capabilities.',
-  'Un Google Pixel 8 reconditionné haut de gamme, flashé professionnellement avec GrapheneOS. Dépouillé de tous les services Google Play et de la télémétrie de suivi. Vivez le summum de la confidentialité mobile sans sacrifier les capacités modernes des smartphones.',
-  'PHANTOM-P8-01', 599.99, 15, 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&q=80&w=800', true, 'hardware'),
-('p-libre-book',
-  'LibreBook Secure Laptop (QubesOS)',
-  'Ordinateur Portable Sécurisé LibreBook (QubesOS)',
-  'Security by compartmentalization. A laptop built entirely from open-source hardware components, running QubesOS out of the box. Isolate your work, personal, and secure environments in hardware-enforced virtual machines.',
-  'La sécurité par la compartimentation. Un ordinateur portable entièrement construit à partir de composants matériels open source, fonctionnant avec QubesOS dès la sortie de la boîte. Isolez vos environnements de travail, personnels et sécurisés dans des machines virtuelles imposées par le matériel.',
-  'LIBRE-QB-01', 1499.99, 10, 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80&w=800', true, 'hardware'),
-('p-filter-list',
-  'VaultWares Ultimate Filter List',
-  'Liste de Filtres Ultime VaultWares',
-  'A meticulously curated filter list for uBlock Origin and AdGuard. Over a year in the making, this list provides maximum security against trackers and malicious domains while manually patching breakages on popular websites for maximum usability. Delivered as a secure, auto-updating subscription link.',
-  'Une liste de filtres méticuleusement organisée pour uBlock Origin et AdGuard. Fruit d''un an de travail, cette liste offre une sécurité maximale contre les traqueurs et les domaines malveillants, tout en corrigeant manuellement les dysfonctionnements sur les sites populaires pour une utilisabilité maximale. Livrée sous forme de lien d''abonnement sécurisé à mise à jour automatique.',
-  'VW-FILTER-01', 19.99, 9999, 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=800', true, 'software');
+-- Product names/descriptions are stored in English in the DB.
+-- Localized text is provided at query time via locale resource files (locales/products.*.json),
+-- selected based on the Accept-Language header in the API request.
+INSERT INTO products (id, name, description, sku, price, inventory_count, image_url, is_active, category) VALUES
+('p-sentry-ids', 'Aegis Network Sentry (IDS)', 'A plug-and-play gateway Intrusion Detection System (IDS) that analyzes network packets in real-time. Powered by a high-performance quad-core CPU, 8GB RAM, and a 128GB NVMe SSD, it handles gigabit speeds (1 Gbps) effortlessly. Detects malicious patterns and alerts you instantly via email. Perfect for small businesses and privacy-conscious homes. Zero telemetry, absolutely no tracking. Optional secure remote support available.', 'AEGIS-IDS-01', 299.99, 50, 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800', true, 'hardware'),
+('p-privacy-hub', 'Aegis Privacy Hub', 'Take back control of your network. This plug-and-play gateway features a network-wide AdGuard adblocker, a built-in WireGuard VPN client, and military-grade DNS encryption. Stop your ISP from snooping on your traffic and block trackers before they reach your devices. Can be used standalone or integrated seamlessly with the Aegis Network Sentry.', 'AEGIS-PRV-01', 249.99, 75, 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=800', true, 'hardware'),
+('p-nomad-router', 'Nomad Secure Mobile Router', 'Complete anonymity wherever you go. A portable Wi-Fi router featuring full-traffic encryption and a pre-configured, untraceable eSIM not tied to your identity. Create a private, secure network bubble in any hotel, cafe, or airport.', 'NOMAD-MR-01', 349.99, 30, 'https://images.unsplash.com/photo-1606229365485-93a3b8ee0385?auto=format&fit=crop&q=80&w=800', true, 'hardware'),
+('p-phantom-pixel', 'Phantom Pixel 8 (GrapheneOS)', 'A premium refurbished Google Pixel 8, professionally flashed with GrapheneOS. Stripped of all Google Play Services and tracking telemetry. Experience the pinnacle of mobile privacy without sacrificing modern smartphone capabilities.', 'PHANTOM-P8-01', 599.99, 15, 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&q=80&w=800', true, 'hardware'),
+('p-libre-book', 'LibreBook Secure Laptop (QubesOS)', 'Security by compartmentalization. A laptop built entirely from open-source hardware components, running QubesOS out of the box. Isolate your work, personal, and secure environments in hardware-enforced virtual machines.', 'LIBRE-QB-01', 1499.99, 10, 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80&w=800', true, 'hardware'),
+('p-filter-list', 'VaultWares Ultimate Filter List', 'A meticulously curated filter list for uBlock Origin and AdGuard. Over a year in the making, this list provides maximum security against trackers and malicious domains while manually patching breakages on popular websites for maximum usability. Delivered as a secure, auto-updating subscription link.', 'VW-FILTER-01', 19.99, 9999, 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=800', true, 'software');
 
 INSERT INTO orders (id, user_id, total_amount, status, created_at) VALUES 
 ('ord-001', 'u-12345', 549.98, 'shipped', '2026-02-15 10:30:00Z');

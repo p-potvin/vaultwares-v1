@@ -3,12 +3,12 @@
   "outputDirectory": "dist",
   "framework": null,
   "functions": {
-    "api/index.ts": {
+    "api/proxy.ts": {
       "runtime": "@vercel/node"
     }
   },
   "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/index" },
+    { "source": "/api/:path*", "destination": "/api/proxy" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

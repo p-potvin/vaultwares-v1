@@ -358,7 +358,7 @@ export default function Checkout() {
                         </span>
                       </div>
                       <div>
-                        <p className="line-clamp-2 font-sans text-sm font-bold text-white">{t(`products.${item.product.id}.name`, { defaultValue: item.product.name })}</p>
+                        <p className="line-clamp-2 font-sans text-sm font-bold text-white">{item.product.name}</p>
                         <p className="font-mono text-xs text-zinc-500">{item.product.sku}</p>
                       </div>
                     </div>

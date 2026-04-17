@@ -1,0 +1,26 @@
+{
+  "p-sentry-ids": {
+    "name": "Aegis Network Sentry (IDS)",
+    "description": "Un système de détection d'intrusion (IDS) passerelle prêt à l'emploi qui analyse les paquets réseau en temps réel. Propulsé par un processeur quad-core haute performance, 8 Go de RAM et un SSD NVMe de 128 Go, il gère les vitesses gigabit (1 Gbps) sans effort. Détecte les modèles malveillants et vous alerte instantanément par e-mail. Parfait pour les petites entreprises et les foyers soucieux de la confidentialité. Zéro télémétrie, absolument aucun suivi. Support à distance sécurisé en option disponible."
+  },
+  "p-privacy-hub": {
+    "name": "Aegis Privacy Hub",
+    "description": "Reprenez le contrôle de votre réseau. Cette passerelle prête à l'emploi comprend un bloqueur de publicités AdGuard à l'échelle du réseau, un client VPN WireGuard intégré et un cryptage DNS de niveau militaire. Empêchez votre FAI d'espionner votre trafic et bloquez les traqueurs avant qu'ils n'atteignent vos appareils. Peut être utilisé seul ou intégré de manière transparente avec l'Aegis Network Sentry."
+  },
+  "p-nomad-router": {
+    "name": "Routeur Mobile Sécurisé Nomad",
+    "description": "L'anonymat complet où que vous alliez. Un routeur Wi-Fi portable doté d'un chiffrement de tout le trafic et d'une eSIM préconfigurée, introuvable et non liée à votre identité. Créez une bulle de réseau privée et sécurisée dans n'importe quel hôtel, café ou aéroport."
+  },
+  "p-phantom-pixel": {
+    "name": "Phantom Pixel 8 (GrapheneOS)",
+    "description": "Un Google Pixel 8 reconditionné haut de gamme, flashé professionnellement avec GrapheneOS. Dépouillé de tous les services Google Play et de la télémétrie de suivi. Vivez le summum de la confidentialité mobile sans sacrifier les capacités modernes des smartphones."
+  },
+  "p-libre-book": {
+    "name": "Ordinateur Portable Sécurisé LibreBook (QubesOS)",
+    "description": "La sécurité par la compartimentation. Un ordinateur portable entièrement construit à partir de composants matériels open source, fonctionnant avec QubesOS dès la sortie de la boîte. Isolez vos environnements de travail, personnels et sécurisés dans des machines virtuelles imposées par le matériel."
+  },
+  "p-filter-list": {
+    "name": "Liste de Filtres Ultime VaultWares",
+    "description": "Une liste de filtres méticuleusement organisée pour uBlock Origin et AdGuard. Fruit d'un an de travail, cette liste offre une sécurité maximale contre les traqueurs et les domaines malveillants, tout en corrigeant manuellement les dysfonctionnements sur les sites populaires pour une utilisabilité maximale. Livrée sous forme de lien d'abonnement sécurisé à mise à jour automatique."
+  }
+}

@@ -5,17 +5,18 @@ import type { Product } from '../store/mockData';
 import ProductCard from '../components/ProductCard';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { apiFetch } from '../lib/apiFetch';
 
 export default function Home() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch('/api/products')
+    apiFetch('/api/products')
       .then((r) => r.json())
       .then((data: Product[]) => setFeaturedProducts(data.slice(0, 3)))
       .catch((err) => console.error('[Home] Failed to fetch products:', err));
-  }, []);
+  }, [i18n.language]); // Re-fetch when language changes
 
   return (
     <motion.div

@@ -59,7 +59,7 @@ export default function Cart() {
                             to={`/product/${item.product.id}`}
                             className="font-sans text-lg font-bold text-white hover:text-emerald-400"
                           >
-                            {t(`products.${item.product.id}.name`, { defaultValue: item.product.name })}
+                            {item.product.name}
                           </Link>
                           <p className="font-mono text-xs text-zinc-500">{t('product.sku')}: {item.product.sku}</p>
                         </div>

@@ -5,6 +5,7 @@ import ProductCard from '../components/ProductCard';
 import { Filter, Search, Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { apiFetch } from '../lib/apiFetch';
 
 export default function Store() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -12,12 +13,13 @@ export default function Store() {
   const [searchQuery, setSearchQuery] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setIsLoading(true);
       try {
-        const response = await fetch('/api/products');
+        const response = await apiFetch('/api/products');
         if (response.ok) {
           const data = await response.json();
           setProducts(data);
@@ -29,18 +31,17 @@ export default function Store() {
       }
     };
     fetchProducts();
-  }, []);
+    // Re-fetch when language changes so API returns the new locale
+  }, [i18n.language]);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter;
-      const productName = t(`products.${product.id}.name`, { defaultValue: product.name });
-      const productDesc = t(`products.${product.id}.desc`, { defaultValue: product.description });
-      const matchesSearch = productName.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            productDesc.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            product.description.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch && product.is_active;
     });
-  }, [categoryFilter, searchQuery, products, t]);
+  }, [categoryFilter, searchQuery, products]);
 
   const setCategory = (category: string) => {
     if (category === 'all') {

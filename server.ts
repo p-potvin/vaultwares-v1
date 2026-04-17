@@ -6,8 +6,16 @@ import cors from 'cors';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
+import { pathToFileURL } from 'url';
+import { readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import rateLimit from 'express-rate-limit';
 import { MOCK_PRODUCTS, MOCK_ORDERS } from './src/store/mockData.ts';
 import { createOrderSchema } from './src/lib/schemas.ts';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Extend Express Request type to include user
 declare global {
@@ -23,9 +31,48 @@ interface UserJwtPayload extends JwtPayload {
   email: string;
 }
 
+type ProductLocaleEntry = { name: string; description: string };
+type ProductLocales = Record<string, ProductLocaleEntry>;
+
+// Load product locale resource files at startup (equivalent to .resx / gettext .po files)
+function loadLocale(lang: string): ProductLocales {
+  const filePath = resolve(__dirname, 'locales', `products.${lang}.json`);
+  try {
+    return JSON.parse(readFileSync(filePath, 'utf-8')) as ProductLocales;
+  } catch {
+    return {};
+  }
+}
+
+const LOCALES: Record<string, ProductLocales> = {
+  en: loadLocale('en'),
+  fr: loadLocale('fr'),
+};
+const SUPPORTED_LANGS = new Set(['en', 'fr']);
+const DEFAULT_LANG = 'en';
+
+/** Resolve the 2-letter language code from the Accept-Language header, defaulting to English. */
+function resolveLanguage(req: Request): string {
+  const header = req.headers['accept-language'] ?? '';
+  // Take the first language tag (e.g. "fr-CA,fr;q=0.9,en;q=0.8" → "fr")
+  const primary = header.split(',')[0].split('-')[0].trim().toLowerCase();
+  return SUPPORTED_LANGS.has(primary) ? primary : DEFAULT_LANG;
+}
+
+/** Apply locale overlay: replace name/description with resource-file values for the given language. */
+function localizeProduct<T extends { id: string; name: string; description: string }>(
+  product: T,
+  lang: string
+): T {
+  const locale = LOCALES[lang] ?? LOCALES[DEFAULT_LANG];
+  const entry = locale[product.id];
+  if (!entry) return product;
+  return { ...product, name: entry.name, description: entry.description };
+}
+
 dotenv.config();
 
-const app = express();
+export const app = express();
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
 let JWT_SECRET = process.env.JWT_SECRET;
 
@@ -43,25 +90,41 @@ if (!JWT_SECRET) {
 app.use(cors());
 app.use(express.json());
 
+// Rate limiting for auth endpoints (prevent brute-force attacks)
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' },
+});
+
 const isProduction = process.env.NODE_ENV === 'production';
 
 // Database connection configuration
-const dbConfig = {
-  user: process.env.DB_USER, // e.g., 'postgres'
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME, // e.g., 'vaultwares-database'
-  // Use a Unix socket in production (on Cloud Run) for security and performance
-  host: isProduction
-    ? `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}` // e.g., '/cloudsql/vaultwares:us-central1:vaultwares-database'
-    : process.env.DB_HOST, // e.g., '127.0.0.1' for local proxy
-  port: isProduction ? undefined : Number(process.env.DB_PORT || 5432),
-};
-
-const pool = new pg.Pool(dbConfig);
+// Support DATABASE_URL (Vercel Postgres / standard connection string) or individual vars
+let pool: pg.Pool;
+if (process.env.DATABASE_URL) {
+  pool = new pg.Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: isProduction ? { rejectUnauthorized: false } : undefined,
+  });
+} else {
+  const dbConfig = {
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: isProduction
+      ? `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}`
+      : process.env.DB_HOST,
+    port: isProduction ? undefined : Number(process.env.DB_PORT || 5432),
+  };
+  pool = new pg.Pool(dbConfig);
+}
 
 // Helper to check DB connection
 const isDbConnected = () =>
-  !!(process.env.DB_USER && process.env.DB_PASSWORD && process.env.DB_NAME);
+  !!(process.env.DATABASE_URL || (process.env.DB_USER && process.env.DB_PASSWORD && process.env.DB_NAME));
 
 // Authentication Middleware
 const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
@@ -72,7 +135,7 @@ const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
     if (err) return res.status(403).json({ error: 'Invalid token' });
-    req.user = user as JwtPayload;
+    req.user = user as UserJwtPayload;
     next();
   });
 };
@@ -83,7 +146,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Auth Routes
-app.post('/api/auth/register', async (req, res) => {
+app.post('/api/auth/register', authLimiter, async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
 
   if (!isDbConnected()) {
@@ -110,7 +173,7 @@ app.post('/api/auth/register', async (req, res) => {
   }
 });
 
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', authLimiter, async (req, res) => {
   const { email, password } = req.body;
 
   if (!isDbConnected()) {
@@ -138,12 +201,15 @@ app.post('/api/auth/login', async (req, res) => {
 
 // Product Routes
 app.get('/api/products', async (req, res) => {
+  const lang = resolveLanguage(req);
   if (!isDbConnected()) {
-    return res.json(MOCK_PRODUCTS);
+    return res.json(MOCK_PRODUCTS.map(p => localizeProduct(p, lang)));
   }
   try {
-    const result = await pool.query('SELECT * FROM products WHERE is_active = true');
-    res.json(result.rows);
+    const result = await pool.query(
+      'SELECT id, name, description, sku, price, inventory_count, image_url, is_active, category FROM products WHERE is_active = true'
+    );
+    res.json(result.rows.map((p) => localizeProduct(p, lang)));
   } catch (err) {
     console.error('DB Error:', err);
     res.status(500).json({ error: 'Failed to fetch products' });
@@ -151,14 +217,20 @@ app.get('/api/products', async (req, res) => {
 });
 
 app.get('/api/products/:id', async (req, res) => {
+  const lang = resolveLanguage(req);
   if (!isDbConnected()) {
     const product = MOCK_PRODUCTS.find(p => p.id === req.params.id);
-    return product ? res.json(product) : res.status(404).json({ error: 'Not found' });
+    return product
+      ? res.json(localizeProduct(product, lang))
+      : res.status(404).json({ error: 'Not found' });
   }
   try {
-    const result = await pool.query('SELECT * FROM products WHERE id = $1', [req.params.id]);
+    const result = await pool.query(
+      'SELECT id, name, description, sku, price, inventory_count, image_url, is_active, category FROM products WHERE id = $1',
+      [req.params.id]
+    );
     if (result.rows.length === 0) return res.status(404).json({ error: 'Not found' });
-    res.json(result.rows[0]);
+    res.json(localizeProduct(result.rows[0], lang));
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch product' });
   }
@@ -166,8 +238,15 @@ app.get('/api/products/:id', async (req, res) => {
 
 // Order Routes
 app.get('/api/orders', authenticateToken, async (req, res) => {
+  const lang = resolveLanguage(req);
   if (!isDbConnected()) {
-    return res.json(MOCK_ORDERS);
+    return res.json(MOCK_ORDERS.map(order => ({
+      ...order,
+      items: order.items.map(item => ({
+        ...item,
+        product: localizeProduct(item.product, lang),
+      })),
+    })));
   }
   try {
     const result = await pool.query(`
@@ -179,6 +258,7 @@ app.get('/api/orders', authenticateToken, async (req, res) => {
                'product', json_build_object(
                  'id', p.id,
                  'name', p.name,
+                 'description', p.description,
                  'image_url', p.image_url
                )
              )) as items
@@ -189,7 +269,18 @@ app.get('/api/orders', authenticateToken, async (req, res) => {
       GROUP BY o.id
       ORDER BY o.created_at DESC
     `, [(req.user as JwtPayload).id]);
-    res.json(result.rows);
+
+    // Apply locale overlay to each order's product items
+    const rows = result.rows.map(order => ({
+      ...order,
+      items: order.items
+        ? order.items.map((item: { product_id: string; quantity: number; price_at_purchase: number; product: { id: string; name: string; description: string; image_url: string } }) => ({
+            ...item,
+            product: localizeProduct(item.product, lang),
+          }))
+        : [],
+    }));
+    res.json(rows);
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch orders' });
   }
@@ -203,7 +294,7 @@ app.post('/api/orders', authenticateToken, async (req, res) => {
   // 1. Validate incoming data with Zod
   const validation = createOrderSchema.safeParse(req.body);
   if (!validation.success) {
-    return res.status(400).json({ error: 'Invalid order data', details: validation.error.errors });
+    return res.status(400).json({ error: 'Invalid order data', details: validation.error.issues });
   }
 
   const { items } = validation.data;
@@ -315,7 +406,7 @@ app.get('/api/track/:number', (req, res) => {
 });
 
 // Vite middleware for development
-async function startServer() {
+export async function startServer() {
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },
@@ -324,6 +415,10 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     app.use(express.static('dist'));
+    // SPA fallback for client-side routing
+    app.get('*', (_req, res) => {
+      res.sendFile('dist/index.html', { root: '.' });
+    });
   }
 
   app.listen(PORT, () => {
@@ -331,4 +426,8 @@ async function startServer() {
   });
 }
 
-startServer();
+// Only start server when running directly (not imported by serverless handler)
+const isMain = import.meta.url === pathToFileURL(process.argv[1]).href;
+if (isMain) {
+  startServer();
+}

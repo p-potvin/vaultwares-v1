@@ -29,7 +29,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         <div className="mb-2 flex items-start justify-between gap-4">
           <Link to={`/product/${product.id}`}>
             <h3 className="font-sans text-lg font-bold text-white transition-colors hover:text-emerald-400">
-              {t(`products.${product.id}.name`, { defaultValue: product.name })}
+              {product.name}
             </h3>
           </Link>
           <span className="font-mono text-lg font-bold text-white">
@@ -38,7 +38,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         </div>
 
         <p className="mb-6 line-clamp-2 flex-1 text-sm text-zinc-400">
-          {t(`products.${product.id}.desc`, { defaultValue: product.description })}
+          {product.description}
         </p>
 
         <div className="flex items-center justify-between border-t border-white/10 pt-4">

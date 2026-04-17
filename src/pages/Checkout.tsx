@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { ShieldCheck, CreditCard, Lock, CheckCircle, Download, Mail, ArrowRight, LogIn } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { apiFetch } from '../lib/apiFetch';
 
 export default function Checkout() {
   const { items, totalPrice, clearCart } = useCart();
@@ -47,7 +48,7 @@ export default function Checkout() {
         headers['Authorization'] = `Bearer ${token}`;
       }
 
-      const response = await fetch('/api/orders', {
+      const response = await apiFetch('/api/orders', {
         method: 'POST',
         headers,
         body: JSON.stringify({ items }),

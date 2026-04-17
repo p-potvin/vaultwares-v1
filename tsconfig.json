@@ -22,5 +22,13 @@
     },
     "allowImportingTsExtensions": true,
     "noEmit": true
-  }
+  },
+  "exclude": [
+    "vaultwares-pipelines",
+    "vaultwares_agentciation",
+    "vaultwares-agentciation",
+    "vault-themes",
+    "node_modules",
+    "dist"
+  ]
 }

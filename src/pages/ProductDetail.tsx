@@ -5,6 +5,7 @@ import { ArrowLeft, ShoppingCart, ShieldCheck, Cpu, Code, Package, Loader2 } fro
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { apiFetch } from '../lib/apiFetch';
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -12,12 +13,13 @@ export default function ProductDetail() {
   const [isLoading, setIsLoading] = useState(true);
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const fetchProduct = async () => {
+      setIsLoading(true);
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/products/${id}`);
+        const response = await apiFetch(`/api/products/${id}`);
         if (response.ok) {
           const data = await response.json();
           setProduct(data);
@@ -29,7 +31,8 @@ export default function ProductDetail() {
       }
     };
     fetchProduct();
-  }, [id]);
+    // Re-fetch when language changes so product text is updated
+  }, [id, i18n.language]);
 
   if (isLoading) {
     return (
@@ -72,7 +75,7 @@ export default function ProductDetail() {
           <div className="overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/50">
             <img
               src={product.image_url}
-              alt={t(`products.${product.id}.name`, { defaultValue: product.name })}
+              alt={product.name}
               className="h-full w-full object-cover"
               referrerPolicy="no-referrer"
             />
@@ -89,14 +92,14 @@ export default function ProductDetail() {
             </div>
 
             <h1 className="mb-4 font-sans text-4xl font-bold text-white sm:text-5xl">
-              {t(`products.${product.id}.name`, { defaultValue: product.name })}
+              {product.name}
             </h1>
             <p className="mb-8 font-mono text-3xl font-bold text-emerald-400">${product.price.toFixed(2)}</p>
 
             <div className="mb-8 border-y border-white/10 py-6">
               <h3 className="mb-4 font-mono text-sm font-bold text-zinc-400">DESCRIPTION</h3>
               <p className="text-lg leading-relaxed text-zinc-300">
-                {t(`products.${product.id}.desc`, { defaultValue: product.description })}
+                {product.description}
               </p>
             </div>
 

@@ -1,0 +1,26 @@
+{
+  "p-sentry-ids": {
+    "name": "Aegis Network Sentry (IDS)",
+    "description": "A plug-and-play gateway Intrusion Detection System (IDS) that analyzes network packets in real-time. Powered by a high-performance quad-core CPU, 8GB RAM, and a 128GB NVMe SSD, it handles gigabit speeds (1 Gbps) effortlessly. Detects malicious patterns and alerts you instantly via email. Perfect for small businesses and privacy-conscious homes. Zero telemetry, absolutely no tracking. Optional secure remote support available."
+  },
+  "p-privacy-hub": {
+    "name": "Aegis Privacy Hub",
+    "description": "Take back control of your network. This plug-and-play gateway features a network-wide AdGuard adblocker, a built-in WireGuard VPN client, and military-grade DNS encryption. Stop your ISP from snooping on your traffic and block trackers before they reach your devices. Can be used standalone or integrated seamlessly with the Aegis Network Sentry."
+  },
+  "p-nomad-router": {
+    "name": "Nomad Secure Mobile Router",
+    "description": "Complete anonymity wherever you go. A portable Wi-Fi router featuring full-traffic encryption and a pre-configured, untraceable eSIM not tied to your identity. Create a private, secure network bubble in any hotel, cafe, or airport."
+  },
+  "p-phantom-pixel": {
+    "name": "Phantom Pixel 8 (GrapheneOS)",
+    "description": "A premium refurbished Google Pixel 8, professionally flashed with GrapheneOS. Stripped of all Google Play Services and tracking telemetry. Experience the pinnacle of mobile privacy without sacrificing modern smartphone capabilities."
+  },
+  "p-libre-book": {
+    "name": "LibreBook Secure Laptop (QubesOS)",
+    "description": "Security by compartmentalization. A laptop built entirely from open-source hardware components, running QubesOS out of the box. Isolate your work, personal, and secure environments in hardware-enforced virtual machines."
+  },
+  "p-filter-list": {
+    "name": "VaultWares Ultimate Filter List",
+    "description": "A meticulously curated filter list for uBlock Origin and AdGuard. Over a year in the making, this list provides maximum security against trackers and malicious domains while manually patching breakages on popular websites for maximum usability. Delivered as a secure, auto-updating subscription link."
+  }
+}

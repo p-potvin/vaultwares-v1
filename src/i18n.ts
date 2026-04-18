@@ -1,5 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import LanguageDetector from 'i18next-browser-languagedetector';
 
 const resources = {
   en: {
@@ -7,6 +8,9 @@ const resources = {
       nav: {
         store: '[ STORE ]',
         intel: '[ INTEL ]',
+        login: '[ LOGIN ]',
+        account: '[ ACCOUNT ]',
+        logout: '[ LOGOUT ]',
       },
       home: {
         hero_tag: 'RECLAIM YOUR DIGITAL AUTONOMY',
@@ -72,6 +76,7 @@ const resources = {
         total: 'Total',
         checkout: 'PROCEED TO CHECKOUT',
         secure_payment: 'Encrypted 256-bit secure payment',
+        taxes: 'Taxes',
       },
       checkout: {
         success: 'PAYMENT SUCCESSFUL',
@@ -122,6 +127,32 @@ const resources = {
       },
       common: {
         add: 'ADD',
+      },
+      auth: {
+        login_title: 'SECURE LOGIN',
+        register_title: 'CREATE ACCOUNT',
+        email: 'EMAIL ADDRESS',
+        password: 'PASSWORD',
+        first_name: 'FIRST NAME',
+        last_name: 'LAST NAME',
+        login_btn: 'LOGIN',
+        register_btn: 'CREATE ACCOUNT',
+        already_have_account: 'Already have an account?',
+        no_account: "Don't have an account?",
+        switch_login: 'Sign in',
+        switch_register: 'Create one',
+        login_error: 'Invalid email or password.',
+        register_error: 'Registration failed. Email may already be in use.',
+        login_to_checkout: 'You must be logged in to complete your purchase.',
+        login_now: 'LOGIN TO CONTINUE',
+        welcome: 'Welcome',
+        orders_title: 'MY ORDERS',
+        no_orders: 'No orders yet.',
+        order_id: 'Order',
+        order_date: 'Date',
+        order_status: 'Status',
+        order_total: 'Total',
+        logout_confirm: 'You have been logged out.',
       },
       products: {
         'p-sentry-ids': {
@@ -340,6 +371,9 @@ We must equip the next generation with the tools and the mindset to navigate a w
       nav: {
         store: '[ BOUTIQUE ]',
         intel: '[ INFOS ]',
+        login: '[ CONNEXION ]',
+        account: '[ MON COMPTE ]',
+        logout: '[ DÉCONNEXION ]',
       },
       home: {
         hero_tag: 'REPRENEZ VOTRE AUTONOMIE NUMÉRIQUE',
@@ -405,6 +439,7 @@ We must equip the next generation with the tools and the mindset to navigate a w
         total: 'Total',
         checkout: 'PROCÉDER AU PAIEMENT',
         secure_payment: 'Paiement sécurisé chiffré en 256 bits',
+        taxes: 'Taxes',
       },
       checkout: {
         success: 'PAIEMENT RÉUSSI',
@@ -455,6 +490,32 @@ We must equip the next generation with the tools and the mindset to navigate a w
       },
       common: {
         add: 'AJOUTER',
+      },
+      auth: {
+        login_title: 'CONNEXION SÉCURISÉE',
+        register_title: 'CRÉER UN COMPTE',
+        email: 'ADRESSE EMAIL',
+        password: 'MOT DE PASSE',
+        first_name: 'PRÉNOM',
+        last_name: 'NOM DE FAMILLE',
+        login_btn: 'SE CONNECTER',
+        register_btn: 'CRÉER UN COMPTE',
+        already_have_account: 'Vous avez déjà un compte ?',
+        no_account: "Vous n'avez pas de compte ?",
+        switch_login: 'Se connecter',
+        switch_register: 'En créer un',
+        login_error: 'Email ou mot de passe invalide.',
+        register_error: "L'inscription a échoué. L'email est peut-être déjà utilisé.",
+        login_to_checkout: 'Vous devez être connecté pour finaliser votre achat.',
+        login_now: 'SE CONNECTER POUR CONTINUER',
+        welcome: 'Bienvenue',
+        orders_title: 'MES COMMANDES',
+        no_orders: 'Aucune commande pour le moment.',
+        order_id: 'Commande',
+        order_date: 'Date',
+        order_status: 'Statut',
+        order_total: 'Total',
+        logout_confirm: 'Vous avez été déconnecté.',
       },
       products: {
         'p-sentry-ids': {
@@ -671,11 +732,16 @@ Nous devons équiper la prochaine génération des outils et de l'état d'esprit
 };
 
 i18n
+  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'fr', // default language
-    fallbackLng: 'en',
+    fallbackLng: 'fr',
+    detection: {
+      order: ['localStorage', 'navigator'],
+      caches: ['localStorage'],
+      lookupLocalStorage: 'vw_lang',
+    },
     interpolation: {
       escapeValue: false
     }

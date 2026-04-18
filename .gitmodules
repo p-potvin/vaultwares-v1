@@ -4,3 +4,12 @@
 [submodule "vaultwares_agentciation"]
 	path = vaultwares_agentciation
 	url = https://github.com/p-potvin/vaultwares-agentciation
+<<<<<<< HEAD
+=======
+[submodule "vaultwares-agentciation"]
+	path = vaultwares-agentciation
+	url = https://github.com/p-potvin/vaultwares-agentciation
+[submodule "vaultwares-pipelines"]
+	path = vaultwares-pipelines
+	url = https://github.com/p-potvin/vaultwares-pipelines.git
+>>>>>>> 6a6c3f58fd15bed83a40882c85882b444f52ac80

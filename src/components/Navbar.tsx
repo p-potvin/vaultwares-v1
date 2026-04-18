@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
-import { Shield, ShoppingCart, Menu, X, Globe } from 'lucide-react';
+import { Shield, ShoppingCart, Menu, X, Globe, User, LogOut, LogIn } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Navbar() {
   const { totalItems } = useCart();
+  const { user, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { t, i18n } = useTranslation();
 
@@ -41,6 +43,26 @@ export default function Navbar() {
               <Globe className="h-4 w-4" />
               {i18n.language.toUpperCase()}
             </button>
+            {user ? (
+              <>
+                <Link to="/account" className="flex items-center gap-1.5 font-mono text-xs font-medium text-zinc-400 transition-colors hover:text-emerald-400">
+                  <User className="h-4 w-4" />
+                  {user.first_name}
+                </Link>
+                <button
+                  onClick={logout}
+                  className="flex items-center gap-1.5 font-mono text-xs font-medium text-zinc-400 transition-colors hover:text-red-400"
+                >
+                  <LogOut className="h-4 w-4" />
+                  {t('nav.logout')}
+                </button>
+              </>
+            ) : (
+              <Link to="/login" className="flex items-center gap-1.5 font-mono text-xs font-medium text-zinc-400 transition-colors hover:text-emerald-400">
+                <LogIn className="h-4 w-4" />
+                {t('nav.login')}
+              </Link>
+            )}
             <Link to="/cart" className="relative text-zinc-400 transition-colors hover:text-white">
               <ShoppingCart className="h-5 w-5" />
               {totalItems > 0 && (
@@ -96,6 +118,34 @@ export default function Navbar() {
             >
               {t('nav.intel')}
             </Link>
+            {user ? (
+              <>
+                <Link
+                  to="/account"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="flex items-center gap-2 font-mono text-sm font-medium text-zinc-400 hover:text-emerald-400"
+                >
+                  <User className="h-4 w-4" />
+                  {t('nav.account')}
+                </Link>
+                <button
+                  onClick={() => { logout(); setIsMenuOpen(false); }}
+                  className="flex items-center gap-2 font-mono text-sm font-medium text-zinc-400 hover:text-red-400 text-left"
+                >
+                  <LogOut className="h-4 w-4" />
+                  {t('nav.logout')}
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setIsMenuOpen(false)}
+                className="flex items-center gap-2 font-mono text-sm font-medium text-zinc-400 hover:text-emerald-400"
+              >
+                <LogIn className="h-4 w-4" />
+                {t('nav.login')}
+              </Link>
+            )}
           </div>
         </div>
       )}

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { ShieldCheck, CreditCard, Lock, CheckCircle, Download, Mail, ArrowRight } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { ShieldCheck, CreditCard, Lock, CheckCircle, Download, Mail, ArrowRight, LogIn } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
+import { apiFetch } from '../lib/apiFetch';
 
 export default function Checkout() {
   const { items, totalPrice, clearCart } = useCart();
+  const { user, token } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -41,15 +44,14 @@ export default function Checkout() {
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
       };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
 
-      const response = await fetch('/api/orders', {
+      const response = await apiFetch('/api/orders', {
         method: 'POST',
         headers,
-        body: JSON.stringify({
-          items,
-          total_amount: totalPrice,
-          user_id: 'guest',
-        }),
+        body: JSON.stringify({ items }),
       });
 
       if (response.ok) {
@@ -138,6 +140,26 @@ export default function Checkout() {
   if (items.length === 0) {
     navigate('/store');
     return null;
+  }
+
+  if (!user) {
+    return (
+      <div className="flex min-h-[80vh] flex-col items-center justify-center bg-black text-white px-4 text-center">
+        <div className="w-full max-w-md rounded-2xl border border-white/10 bg-zinc-900/50 p-10">
+          <Lock className="mx-auto mb-6 h-12 w-12 text-emerald-500" />
+          <h2 className="mb-3 font-mono text-2xl font-bold text-white">{t('checkout.title')}</h2>
+          <p className="mb-8 text-zinc-400">{t('auth.login_to_checkout')}</p>
+          <Link
+            to="/login"
+            state={{ from: '/checkout' }}
+            className="flex items-center justify-center gap-2 rounded-lg bg-emerald-500 px-8 py-4 font-mono text-sm font-bold text-black transition-all hover:bg-emerald-400"
+          >
+            <LogIn className="h-4 w-4" />
+            {t('auth.login_now')}
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -337,7 +359,7 @@ export default function Checkout() {
                         </span>
                       </div>
                       <div>
-                        <p className="line-clamp-2 font-sans text-sm font-bold text-white">{t(`products.${item.product.id}.name`, { defaultValue: item.product.name })}</p>
+                        <p className="line-clamp-2 font-sans text-sm font-bold text-white">{item.product.name}</p>
                         <p className="font-mono text-xs text-zinc-500">{item.product.sku}</p>
                       </div>
                     </div>

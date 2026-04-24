@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:https": "powershell -ExecutionPolicy Bypass -File .\\start_https_dev.ps1",
     "start": "vite preview",
     "build": "vite build",
     "preview": "vite preview",

@@ -1,8 +1,8 @@
 /**
  * Vercel proxy — forwards all /api/* requests to the vaultwares-pipelines API.
  *
- * Set PIPELINE_API_URL in Vercel environment variables to the IP/hostname
- * of the vaultwares-pipelines API server, e.g. http://1.2.3.4:8080
+ * Set PIPELINE_API_URL in Vercel environment variables to the HTTPS URL
+ * of the vaultwares-pipelines API server, e.g. https://api.vaultwares.com
  */
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
@@ -11,6 +11,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!pipelineUrl) {
     return res.status(503).json({
       error: 'API not configured. Set the PIPELINE_API_URL environment variable.',
+    });
+  }
+
+  if (!/^https:\/\//i.test(pipelineUrl)) {
+    return res.status(503).json({
+      error: 'PIPELINE_API_URL must use https://',
     });
   }
 

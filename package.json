@@ -1,7 +1,7 @@
 {
-  "name": "vaultwares-website",
+  "name": "vaultwares-v1",
   "private": true,
-  "version": "0.3.1",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -40,7 +40,7 @@
     "typescript": "~5.8.2",
     "vite": "^6.4.2"
   },
-  "description": "VaultWares website",
+  "description": "Official VaultWares company website - Cybersecurity &amp; privacy products built 100% on FOSS",
   "main": "index*.js",
   "repository": {
     "type": "git",
@@ -48,15 +48,16 @@
   },
   "keywords": [
     "vaultwares",
-    "website",
-    "nodejs",
-    "server",
-    "typescript"
+    "cybersecurity",
+    "privacy",
+    "open-source",
+    "foss",
+    "company-site"
   ],
   "author": "VaultWares",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/p-potvin/vaultwares-v1/issues"
   },
-  "homepage": "https://github.com/p-potvin/vaultwares-v1#readme"
+  "homepage": "https://vaultwares.com"
 }

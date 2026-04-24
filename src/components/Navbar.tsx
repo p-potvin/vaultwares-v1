@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Shield, ShoppingCart, Menu, X, Globe, User, LogOut, LogIn } from 'lucide-react';
+import { ShoppingCart, Menu, X, Globe, User, LogOut, LogIn } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
@@ -20,8 +20,16 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
           <Link to="/" className="flex items-center gap-2 text-emerald-400">
-            <Shield className="h-8 w-8" />
-            <span className="font-mono text-xl font-bold tracking-tighter text-white">
+            <img
+              src="https://raw.githubusercontent.com/p-potvin/vaultwares-docs/main/logo/vaultwares-logo.svg"
+              alt="VaultWares"
+              className="h-8 w-auto"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = 'none';
+                (e.currentTarget.nextElementSibling as HTMLElement | null)?.removeAttribute('data-hidden');
+              }}
+            />
+            <span className="font-mono text-xl font-bold tracking-tighter text-white" data-hidden>
               VAULT<span className="text-emerald-400">WARES</span>
             </span>
           </Link>
